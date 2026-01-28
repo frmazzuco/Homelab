@@ -1,0 +1,6 @@
+.env
+terraform/oracle/.terraform/
+terraform/oracle/terraform.tfstate
+terraform/oracle/terraform.tfstate.backup
+terraform/oracle/terraform.tfstate.*
+terraform/oracle/terraform.tfvars
