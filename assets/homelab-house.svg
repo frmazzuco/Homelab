@@ -1,0 +1,52 @@
+<svg width="1200" height="500" viewBox="0 0 1200 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D9F0FF"/>
+      <stop offset="1" stop-color="#F7FBFF"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="360" x2="0" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#88D07F"/>
+      <stop offset="1" stop-color="#65B568"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="420" y1="170" x2="780" y2="170" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F06A5A"/>
+      <stop offset="1" stop-color="#E14D3A"/>
+    </linearGradient>
+    <linearGradient id="wall" x1="470" y1="220" x2="730" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF3DD"/>
+      <stop offset="1" stop-color="#F7E5C5"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="500" rx="26" fill="url(#bg)"/>
+  <rect y="360" width="1200" height="140" fill="url(#grass)"/>
+
+  <circle cx="190" cy="110" r="48" fill="#FFD35C"/>
+  <circle cx="840" cy="100" r="26" fill="#FFFFFF" fill-opacity="0.95"/>
+  <circle cx="872" cy="104" r="20" fill="#FFFFFF" fill-opacity="0.95"/>
+  <circle cx="900" cy="98" r="24" fill="#FFFFFF" fill-opacity="0.95"/>
+  <circle cx="980" cy="145" r="22" fill="#FFFFFF" fill-opacity="0.95"/>
+  <circle cx="1008" cy="149" r="17" fill="#FFFFFF" fill-opacity="0.95"/>
+
+  <rect x="448" y="220" width="304" height="170" rx="18" fill="url(#wall)" stroke="#E8D7B4" stroke-width="4"/>
+  <path d="M415 228L600 112L785 228" fill="url(#roof)"/>
+  <path d="M415 228L600 112L785 228" stroke="#B94335" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="570" y="300" width="60" height="90" rx="8" fill="#8D5A37"/>
+  <circle cx="619" cy="345" r="4" fill="#EFD9B3"/>
+
+  <rect x="488" y="262" width="58" height="52" rx="8" fill="#C9ECFF" stroke="#89C3E8" stroke-width="4"/>
+  <path d="M517 262V314" stroke="#89C3E8" stroke-width="4"/>
+  <path d="M488 288H546" stroke="#89C3E8" stroke-width="4"/>
+
+  <rect x="654" y="262" width="58" height="52" rx="8" fill="#C9ECFF" stroke="#89C3E8" stroke-width="4"/>
+  <path d="M683 262V314" stroke="#89C3E8" stroke-width="4"/>
+  <path d="M654 288H712" stroke="#89C3E8" stroke-width="4"/>
+
+  <rect x="390" y="328" width="62" height="62" rx="28" fill="#5DA969"/>
+  <rect x="746" y="328" width="62" height="62" rx="28" fill="#5DA969"/>
+
+  <text x="600" y="455" text-anchor="middle" font-family="Trebuchet MS, Verdana, sans-serif" font-size="54" font-weight="700" fill="#2E4A3E">
+    Homelab
+  </text>
+</svg>

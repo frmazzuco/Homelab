@@ -1,0 +1,20 @@
+tenancy_ocid         = "ocid1.tenancy.oc1..aaaa..."
+user_ocid            = "ocid1.user.oc1..aaaa..."
+fingerprint          = "12:34:56:78:90:ab:cd:ef:12:34:56:78:90:ab:cd:ef"
+private_key_path     = "/Users/SEU_USUARIO/.oci/oci_api_key.pem"
+region               = "sa-saopaulo-1"
+compartment_ocid     = "ocid1.compartment.oc1..aaaa..."
+availability_domain_index = 0
+ssh_public_key_path  = "/Users/SEU_USUARIO/.ssh/id_ed25519.pub"
+additional_ssh_public_keys = [
+  # "ssh-ed25519 AAAA... seu-dispositivo@host"
+]
+allowed_ssh_cidrs    = ["SEU_IP_PUBLICO/32"]
+ssh_user             = "opc"
+instance_ocpus       = 4
+instance_memory_gbs  = 26
+boot_volume_size_gbs = 200
+
+# Portas extras (opcional)
+# allowed_tcp_ports = [443]
+# allowed_tcp_cidrs = ["SEU_IP_PUBLICO/32"]

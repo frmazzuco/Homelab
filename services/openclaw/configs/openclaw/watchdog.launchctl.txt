@@ -1,0 +1,48 @@
+gui/501/com.francisco.openclaw-node-watchdog = {
+	active count = 0
+	path = /Users/franciscomazzucofilho/Library/LaunchAgents/com.francisco.openclaw-node-watchdog.plist
+	type = LaunchAgent
+	state = not running
+
+	program = /bin/bash
+	arguments = {
+		/bin/bash
+		/Users/franciscomazzucofilho/Scripts/openclaw-node-watchdog.sh
+	}
+
+	stdout path = /Users/franciscomazzucofilho/.openclaw/logs/node-watchdog.launchd.out.log
+	stderr path = /Users/franciscomazzucofilho/.openclaw/logs/node-watchdog.launchd.err.log
+	inherited environment = {
+		SSH_AUTH_SOCK => /private/tmp/com.apple.launchd.rrxaHb24pu/Listeners
+	}
+
+	default environment = {
+		PATH => /usr/bin:/bin:/usr/sbin:/sbin
+	}
+
+	environment = {
+		XPC_SERVICE_NAME => com.francisco.openclaw-node-watchdog
+	}
+
+	domain = gui/501 [100088]
+	asid = 100088
+	minimum runtime = 10
+	exit timeout = 5
+	runs = 17
+	last exit code = 0
+
+	spawn type = daemon (3)
+	jetsam priority = 40
+	jetsam memory limit (active) = (unlimited)
+	jetsam memory limit (inactive) = (unlimited)
+	jetsamproperties category = daemon
+	jetsam thread limit = 32
+	cpumon = default
+	run interval = 120 seconds
+	probabilistic guard malloc policy = {
+		activation rate = 1/1000
+		sample rate = 1/0
+	}
+
+	properties = runatload | inferred program
+}

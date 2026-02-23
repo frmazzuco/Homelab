@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.francisco.openclaw-node-watchdog</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/franciscomazzucofilho/Scripts/openclaw-node-watchdog.sh</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StartInterval</key>
+  <integer>120</integer>
+
+  <key>StandardOutPath</key>
+  <string>/Users/franciscomazzucofilho/.openclaw/logs/node-watchdog.launchd.out.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/franciscomazzucofilho/.openclaw/logs/node-watchdog.launchd.err.log</string>
+</dict>
+</plist>
+
+launchctl bootout gui/$(id -u)/com.francisco.openclaw-node-watchdog >/dev/null 2>&1 || true
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.francisco.openclaw-node-watchdog.plist
+launchctl kickstart -k gui/$(id -u)/com.francisco.openclaw-node-watchdog
+sleep 1
+launchctl print gui/$(id -u)/com.francisco.openclaw-node-watchdog | sed -n '1,80p'

@@ -1,0 +1,60 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+ssh_pwauth: false
+disable_root: true
+
+runcmd:
+  - |
+    if [ -f /etc/ssh/sshd_config ]; then
+      sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+      sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+      systemctl reload sshd || systemctl reload ssh || true
+    fi
+  - |
+    if command -v firewall-cmd >/dev/null 2>&1; then
+      systemctl enable --now firewalld
+      firewall-cmd --permanent --add-service=ssh
+%{ for port in allowed_tcp_ports ~}
+      firewall-cmd --permanent --add-port=${port}/tcp
+%{ endfor ~}
+      firewall-cmd --reload
+    elif command -v ufw >/dev/null 2>&1; then
+      ufw allow OpenSSH
+%{ for port in allowed_tcp_ports ~}
+      ufw allow ${port}/tcp
+%{ endfor ~}
+      ufw --force enable
+    fi
+  - |
+    set -euxo pipefail
+    if command -v apt-get >/dev/null 2>&1; then
+      apt-get update -y
+      apt-get install -y ca-certificates curl git jq unzip
+    elif command -v dnf >/dev/null 2>&1; then
+      dnf -y install ca-certificates curl git jq unzip
+    fi
+
+    if ! command -v docker >/dev/null 2>&1; then
+      curl -fsSL https://get.docker.com | sh
+    fi
+
+    if command -v apt-get >/dev/null 2>&1; then
+      apt-get install -y docker-compose-plugin || true
+    elif command -v dnf >/dev/null 2>&1; then
+      dnf -y install docker-compose-plugin || true
+    fi
+
+    systemctl enable --now docker
+
+    bot_user="${ssh_user}"
+    if id -u "$${bot_user}" >/dev/null 2>&1; then
+      usermod -aG docker "$${bot_user}" || true
+      mkdir -p /opt/moltbot
+      chown -R "$${bot_user}:$${bot_user}" /opt/moltbot
+      if [ ! -d /opt/moltbot/.git ]; then
+        sudo -u "$${bot_user}" bash -lc "git clone https://github.com/moltbot/moltbot.git /opt/moltbot"
+      fi
+    fi
+
+    echo "OK: /opt/moltbot clonado. Proximo: rode /opt/moltbot/docker-setup.sh (interativo) via SSH." > /etc/motd

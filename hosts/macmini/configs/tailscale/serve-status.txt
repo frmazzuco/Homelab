@@ -1,0 +1,28 @@
+http://mac-mini-de-francisco (tailnet only)
+http://mac-mini-de-francisco.tailf1e5f9.ts.net (tailnet only)
+|-- / proxy http://127.0.0.1:8096
+
+http://mac-mini-de-francisco:8081 (tailnet only)
+http://mac-mini-de-francisco.tailf1e5f9.ts.net:8081 (tailnet only)
+|-- / proxy http://127.0.0.1:7878
+
+http://mac-mini-de-francisco:8082 (tailnet only)
+http://mac-mini-de-francisco.tailf1e5f9.ts.net:8082 (tailnet only)
+|-- / proxy http://127.0.0.1:8989
+
+http://mac-mini-de-francisco:8083 (tailnet only)
+http://mac-mini-de-francisco.tailf1e5f9.ts.net:8083 (tailnet only)
+|-- / proxy http://127.0.0.1:9696
+
+http://mac-mini-de-francisco:8084 (tailnet only)
+http://mac-mini-de-francisco.tailf1e5f9.ts.net:8084 (tailnet only)
+|-- / proxy http://127.0.0.1:8084
+
+http://mac-mini-de-francisco:8085 (tailnet only)
+http://mac-mini-de-francisco.tailf1e5f9.ts.net:8085 (tailnet only)
+|-- / proxy http://127.0.0.1:8085
+
+http://mac-mini-de-francisco:8086 (tailnet only)
+http://mac-mini-de-francisco.tailf1e5f9.ts.net:8086 (tailnet only)
+|-- / proxy http://127.0.0.1:8086
+

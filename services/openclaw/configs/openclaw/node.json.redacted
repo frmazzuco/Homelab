@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "nodeId": "f2d9c4f7-4b4c-4fd7-8f65-01235252c42e",
+  "displayName": "Mac mini de Francisco",
+  "gateway": {
+    "host": "127.0.0.1",
+    "port": 18789,
+    "tls": false
+  }
+}

@@ -1,6 +1,22 @@
 .env
-terraform/oracle/.terraform/
-terraform/oracle/terraform.tfstate
-terraform/oracle/terraform.tfstate.backup
-terraform/oracle/terraform.tfstate.*
-terraform/oracle/terraform.tfvars
+.env.*
+!.env.example
+
+# Terraform local state and local variables
+**/.terraform/
+**/terraform.tfstate
+**/terraform.tfstate.*
+**/terraform.tfvars
+**/*.tfvars
+**/*.tfvars.json
+!**/*.tfvars.example
+
+# Sensitive artifacts
+*.pem
+*.key
+*.p12
+*.mobileconfig
+*.ovpn
+
+# Python cache
+**/__pycache__/

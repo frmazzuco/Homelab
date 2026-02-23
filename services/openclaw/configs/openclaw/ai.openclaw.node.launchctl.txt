@@ -1,0 +1,72 @@
+gui/501/ai.openclaw.node = {
+	active count = 1
+	path = /Users/franciscomazzucofilho/Library/LaunchAgents/ai.openclaw.node.plist
+	type = LaunchAgent
+	state = running
+
+	program = /Users/franciscomazzucofilho/.local/node-v22.14.0-darwin-arm64/bin/node
+	arguments = {
+		/Users/franciscomazzucofilho/.local/node-v22.14.0-darwin-arm64/bin/node
+		/Users/franciscomazzucofilho/.local/node-v22.14.0-darwin-arm64/lib/node_modules/openclaw/dist/index.js
+		node
+		run
+		--host
+		127.0.0.1
+		--port
+		18789
+	}
+
+	stdout path = /Users/franciscomazzucofilho/.openclaw/logs/node.log
+	stderr path = /Users/franciscomazzucofilho/.openclaw/logs/node.err.log
+	inherited environment = {
+		SSH_AUTH_SOCK => /private/tmp/com.apple.launchd.rrxaHb24pu/Listeners
+	}
+
+	default environment = {
+		PATH => /usr/bin:/bin:/usr/sbin:/sbin
+	}
+
+	environment = {
+		OPENCLAW_SERVICE_VERSION => 2026.2.9
+		OPENCLAW_SYSTEMD_UNIT => openclaw-node
+		OPENCLAW_WINDOWS_TASK_NAME => OpenClaw Node
+		OPENCLAW_TASK_SCRIPT_NAME => node.cmd
+		OPENCLAW_LAUNCHD_LABEL => ai.openclaw.node
+		PATH => /opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin
+		HOME => /Users/franciscomazzucofilho
+		OPENCLAW_SERVICE_KIND => node
+		OPENCLAW_SERVICE_MARKER => openclaw
+		OPENCLAW_LOG_PREFIX => node
+		XPC_SERVICE_NAME => ai.openclaw.node
+	}
+
+	domain = gui/501 [100088]
+	asid = 100088
+	minimum runtime = 10
+	exit timeout = 5
+	runs = 62
+	pid = 4322
+	immediate reason = inefficient
+	forks = 2223
+	execs = 1
+	initialized = 1
+	trampolined = 1
+	started suspended = 0
+	proxy started suspended = 0
+	last terminating signal = Terminated: 15
+
+	spawn type = daemon (3)
+	jetsam priority = 40
+	jetsam memory limit (active) = (unlimited)
+	jetsam memory limit (inactive) = (unlimited)
+	jetsamproperties category = daemon
+	jetsam thread limit = 32
+	cpumon = default
+	job state = running
+	probabilistic guard malloc policy = {
+		activation rate = 1/1000
+		sample rate = 1/0
+	}
+
+	properties = partial import | keepalive | runatload | inferred program
+}

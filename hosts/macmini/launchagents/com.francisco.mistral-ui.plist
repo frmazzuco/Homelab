@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.francisco.mistral-ui</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/franciscomazzucofilho/Scripts/mistral-ui.py</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>MISTRAL_UI_PORT</key><string>8084</string>
+    <key>MISTRAL_MODEL</key><string>gemma3:12b</string>
+    <key>OLLAMA_CHAT_URL</key><string>http://127.0.0.1:11434/api/chat</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>/Users/franciscomazzucofilho/Library/Logs/mistral-ui.log</string>
+  <key>StandardErrorPath</key><string>/Users/franciscomazzucofilho/Library/Logs/mistral-ui.log</string>
+</dict></plist>

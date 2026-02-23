@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>ai.openclaw.node</string>
+    
+    <key>Comment</key>
+    <string>OpenClaw Node Host (v2026.2.9)</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/Users/franciscomazzucofilho/.local/node-v22.14.0-darwin-arm64/bin/node</string>
+      <string>/Users/franciscomazzucofilho/.local/node-v22.14.0-darwin-arm64/lib/node_modules/openclaw/dist/index.js</string>
+      <string>node</string>
+      <string>run</string>
+      <string>--host</string>
+      <string>127.0.0.1</string>
+      <string>--port</string>
+      <string>18789</string>
+    </array>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/franciscomazzucofilho/.openclaw/logs/node.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/franciscomazzucofilho/.openclaw/logs/node.err.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+    <key>HOME</key>
+    <string>/Users/franciscomazzucofilho</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    <key>OPENCLAW_LAUNCHD_LABEL</key>
+    <string>ai.openclaw.node</string>
+    <key>OPENCLAW_SYSTEMD_UNIT</key>
+    <string>openclaw-node</string>
+    <key>OPENCLAW_WINDOWS_TASK_NAME</key>
+    <string>OpenClaw Node</string>
+    <key>OPENCLAW_TASK_SCRIPT_NAME</key>
+    <string>node.cmd</string>
+    <key>OPENCLAW_LOG_PREFIX</key>
+    <string>node</string>
+    <key>OPENCLAW_SERVICE_MARKER</key>
+    <string>openclaw</string>
+    <key>OPENCLAW_SERVICE_KIND</key>
+    <string>node</string>
+    <key>OPENCLAW_SERVICE_VERSION</key>
+    <string>2026.2.9</string>
+    </dict>
+  </dict>
+</plist>
