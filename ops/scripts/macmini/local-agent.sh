@@ -1,13 +1,52 @@
 #!/bin/bash
 set -euo pipefail
 
-export PATH="$HOME/Tools/lima/bin:$PATH"
-COLIMA="$HOME/Tools/colima/colima"
+export PATH="$HOME/Tools/lima/bin:/opt/homebrew/bin:$PATH"
 OLLAMA="$HOME/Tools/ollama/ollama"
 ARRCTL="$HOME/Scripts/arrctl"
 MODEL="gemma3:12b"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 JELLYFIN_START_SCRIPT="$SCRIPT_DIR/../media/jellyfin-start-server.sh"
+
+resolve_colima_bin() {
+  if [ -n "${COLIMA_BIN:-}" ] && [ -x "${COLIMA_BIN:-}" ]; then
+    printf "%s\n" "$COLIMA_BIN"
+    return
+  fi
+  if [ -x "$HOME/Tools/colima/colima" ]; then
+    printf "%s\n" "$HOME/Tools/colima/colima"
+    return
+  fi
+  if command -v colima >/dev/null 2>&1; then
+    command -v colima
+    return
+  fi
+}
+
+COLIMA="$(resolve_colima_bin || true)"
+
+ENGINE=()
+detect_engine() {
+  if [ -z "${COLIMA:-}" ] || [ ! -x "$COLIMA" ]; then
+    return 1
+  fi
+  if ! "$COLIMA" status >/dev/null 2>&1; then
+    return 1
+  fi
+  if "$COLIMA" ssh -- sudo nerdctl version >/dev/null 2>&1; then
+    ENGINE=(sudo nerdctl)
+    return 0
+  fi
+  if "$COLIMA" ssh -- docker version >/dev/null 2>&1; then
+    ENGINE=(docker)
+    return 0
+  fi
+  return 1
+}
+
+engine() {
+  "$COLIMA" ssh -- "${ENGINE[@]}" "$@"
+}
 
 usage() {
   cat <<USAGE
@@ -103,8 +142,8 @@ IDVAL=$(printf "%s" "$PARSED" | sed -n '3p')
 
 case "$ACTION" in
   jellyfin_status)
-    if "$COLIMA" status >/dev/null 2>&1; then
-      OUT=$("$COLIMA" ssh -- sudo nerdctl ps --format '{{.Names}} {{.Status}} {{.Ports}}' | grep '^jellyfin ' || true)
+    if detect_engine; then
+      OUT=$(engine ps --format '{{.Names}} {{.Status}} {{.Ports}}' | grep '^jellyfin ' || true)
       if [ -n "$OUT" ]; then
         echo "✅ Jellyfin: $OUT"
         curl -fsS --max-time 3 http://127.0.0.1:8096/system/info/public >/dev/null 2>&1 && echo "✅ API local respondendo em http://localhost:8096" || echo "⚠️ Porta 8096 sem resposta HTTP"
@@ -112,7 +151,7 @@ case "$ACTION" in
         echo "⚠️ Jellyfin não está rodando"
       fi
     else
-      echo "⚠️ Colima não está rodando"
+      echo "⚠️ Colima indisponível (não rodando ou runtime não detectado)"
     fi
     ;;
 
@@ -127,8 +166,12 @@ case "$ACTION" in
     ;;
 
   jellyfin_stop)
-    "$COLIMA" ssh -- sudo nerdctl stop jellyfin >/dev/null 2>&1 || true
-    echo "✅ Comando de stop enviado para Jellyfin"
+    if detect_engine; then
+      engine stop jellyfin >/dev/null 2>&1 || true
+      echo "✅ Comando de stop enviado para Jellyfin"
+    else
+      echo "⚠️ Colima indisponível (não rodando ou runtime não detectado)"
+    fi
     ;;
 
   ip_local)

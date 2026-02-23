@@ -52,5 +52,5 @@ git remote add origin git@github.com:<seu-usuario>/Homelab.git
 ```bash
 git add .
 git commit -m "chore: organize homelab repo structure"
-git push -u origin master
+git push -u origin main
 ```

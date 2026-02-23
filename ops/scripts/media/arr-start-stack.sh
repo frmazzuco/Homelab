@@ -1,11 +1,31 @@
 #!/bin/bash
 set -euo pipefail
 
-export PATH="$HOME/Tools/lima/bin:$PATH"
-COLIMA="$HOME/Tools/colima/colima"
+export PATH="$HOME/Tools/lima/bin:/opt/homebrew/bin:$PATH"
 UIDN=$(id -u)
 GIDN=$(id -g)
 TZV="America/Sao_Paulo"
+
+resolve_colima_bin() {
+  if [ -n "${COLIMA_BIN:-}" ] && [ -x "${COLIMA_BIN:-}" ]; then
+    printf "%s\n" "$COLIMA_BIN"
+    return
+  fi
+  if [ -x "$HOME/Tools/colima/colima" ]; then
+    printf "%s\n" "$HOME/Tools/colima/colima"
+    return
+  fi
+  if command -v colima >/dev/null 2>&1; then
+    command -v colima
+    return
+  fi
+}
+
+COLIMA="$(resolve_colima_bin || true)"
+if [ -z "${COLIMA:-}" ]; then
+  echo "Colima nao encontrado (defina COLIMA_BIN ou instale via Homebrew)."
+  exit 1
+fi
 
 mkdir -p \
   "$HOME/arr/config/sabnzbd" \
@@ -22,7 +42,7 @@ mkdir -p \
 
 MYSQL_PASS_FILE="$HOME/arr/config/lingarr/.mysql-pass"
 if [ ! -s "$MYSQL_PASS_FILE" ]; then
-  LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 24 > "$MYSQL_PASS_FILE"
+  openssl rand -hex 16 > "$MYSQL_PASS_FILE"
 fi
 chmod 600 "$MYSQL_PASS_FILE"
 MYSQL_PASS=$(cat "$MYSQL_PASS_FILE")
@@ -31,33 +51,52 @@ if ! "$COLIMA" status >/dev/null 2>&1; then
   "$COLIMA" start --runtime containerd --vm-type vz
 fi
 
+ENGINE=()
+if "$COLIMA" ssh -- sudo nerdctl version >/dev/null 2>&1; then
+  ENGINE=(sudo nerdctl)
+elif "$COLIMA" ssh -- docker version >/dev/null 2>&1; then
+  ENGINE=(docker)
+else
+  echo "Nao consegui detectar runtime dentro da VM Colima (nerdctl/docker)."
+  exit 1
+fi
+
+engine() {
+  "$COLIMA" ssh -- "${ENGINE[@]}" "$@"
+}
+
 for i in {1..30}; do
-  if "$COLIMA" ssh -- sudo nerdctl version >/dev/null 2>&1; then
+  if engine version >/dev/null 2>&1; then
     break
   fi
   sleep 2
 done
 
+if ! engine version >/dev/null 2>&1; then
+  echo "Runtime do Colima nao respondeu a tempo."
+  exit 1
+fi
+
 run_or_start() {
   local name="$1"
   shift
-  if "$COLIMA" ssh -- sudo nerdctl ps -a --format '{{.Names}}' | grep -qx "$name"; then
-    "$COLIMA" ssh -- sudo nerdctl start "$name" >/dev/null || true
+  if engine ps -a --format '{{.Names}}' | grep -qx "$name"; then
+    engine start "$name" >/dev/null || true
     echo "started:$name"
   else
-    "$COLIMA" ssh -- sudo nerdctl run -d --name "$name" --restart unless-stopped "$@" >/dev/null
+    engine run -d --name "$name" --restart unless-stopped "$@" >/dev/null
     echo "created:$name"
   fi
 }
 
 # if old sqlite Lingarr exists, force recreate into mysql-backed mode
-if "$COLIMA" ssh -- sudo nerdctl ps -a --format '{{.Names}}' | grep -qx 'lingarr'; then
+if engine ps -a --format '{{.Names}}' | grep -qx 'lingarr'; then
   CUR_DB=$(
-    "$COLIMA" ssh -- sudo nerdctl inspect lingarr --format '{{range .Config.Env}}{{println .}}{{end}}' \
+    engine inspect lingarr --format '{{range .Config.Env}}{{println .}}{{end}}' \
       | awk -F= '/^DB_CONNECTION=/{print $2; exit}'
   )
   if [ "${CUR_DB:-}" != "mysql" ]; then
-    "$COLIMA" ssh -- sudo nerdctl rm -f lingarr >/dev/null 2>&1 || true
+    engine rm -f lingarr >/dev/null 2>&1 || true
     echo "recreated:lingarr (sqlite->mysql)"
   fi
 fi
