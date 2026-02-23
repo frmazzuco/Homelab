@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "generatedAt": "2026-02-23",
+    "source": "mac-mini-de-francisco",
+    "note": "Snapshot redacted da secao notifications do Jellyseerr"
+  },
+  "notifications": {
+    "webhook": {
+      "enabled": true,
+      "types": 2147483647,
+      "typesMeaning": "all_events",
+      "options": {
+        "webhookUrl": "http://apprise-api:8000/notify/",
+        "supportVariables": true,
+        "jsonPayload": {
+          "title": "Jellyseerr | {{notification_type}}",
+          "body": "{{subject}} | {{message}} | Evento: {{event}} | Media: {{media_type}} | TMDB: {{media_tmdbid}} | TVDB: {{media_tvdbid}}",
+          "type": "info",
+          "tag": "media",
+          "format": "text"
+        }
+      }
+    },
+    "email": {
+      "enabled": false
+    },
+    "telegram": {
+      "enabled": false
+    }
+  }
+}

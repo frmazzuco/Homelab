@@ -48,13 +48,20 @@ runcmd:
     systemctl enable --now docker
 
     bot_user="${ssh_user}"
+    gateway_repo_url="${gateway_repo_url}"
+    gateway_repo_dir="${gateway_repo_dir}"
     if id -u "$${bot_user}" >/dev/null 2>&1; then
       usermod -aG docker "$${bot_user}" || true
-      mkdir -p /opt/moltbot
-      chown -R "$${bot_user}:$${bot_user}" /opt/moltbot
-      if [ ! -d /opt/moltbot/.git ]; then
-        sudo -u "$${bot_user}" bash -lc "git clone https://github.com/moltbot/moltbot.git /opt/moltbot"
+      mkdir -p "$${gateway_repo_dir}"
+      chown -R "$${bot_user}:$${bot_user}" "$${gateway_repo_dir}"
+      if [ ! -d "$${gateway_repo_dir}/.git" ]; then
+        sudo -u "$${bot_user}" bash -lc "git clone '$${gateway_repo_url}' '$${gateway_repo_dir}'"
       fi
     fi
 
-    echo "OK: /opt/moltbot clonado. Proximo: rode /opt/moltbot/docker-setup.sh (interativo) via SSH." > /etc/motd
+    cat >/etc/motd <<EOF
+OK: bootstrap finalizado.
+- Repo OpenClaw: $${gateway_repo_dir}
+- Compose esperado: $${gateway_repo_dir}/docker-compose.yml
+- Proximo passo: copiar .env.example para .env e subir o stack.
+EOF

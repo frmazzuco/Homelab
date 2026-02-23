@@ -1,0 +1,7 @@
+{
+  "title": "Jellyseerr | {{notification_type}}",
+  "body": "{{subject}} | {{message}} | Evento: {{event}} | Midia: {{media_type}} | TMDB: {{media_tmdbid}} | TVDB: {{media_tvdbid}}",
+  "type": "info",
+  "tag": "media",
+  "format": "text"
+}

@@ -1,0 +1,83 @@
+services:
+  openclaw-gateway:
+    image: ${OPENCLAW_IMAGE:-openclaw:local}
+    environment:
+      HOME: /home/node
+      TERM: xterm-256color
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY}
+      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
+      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
+      PLUGGY_CLIENT_ID: ${PLUGGY_CLIENT_ID}
+      PLUGGY_CLIENT_SECRET: ${PLUGGY_CLIENT_SECRET}
+      PLUGGY_API_KEY: ${PLUGGY_API_KEY}
+      PLUGGY_BASE_URL: ${PLUGGY_BASE_URL}
+      PLUGGY_API_KEY_TTL_SECONDS: ${PLUGGY_API_KEY_TTL_SECONDS}
+      PLUGGY_CACHE_DIR: ${PLUGGY_CACHE_DIR}
+    volumes:
+      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+      - ${OPENCLAW_SSH_KEY:-/home/opc/.ssh/id_ed25519_github}:/home/node/.ssh/id_ed25519_github:ro
+      - ${OPENCLAW_SSH_CONFIG:-/home/opc/.ssh/config}:/home/node/.ssh/config:ro
+      - ${OPENCLAW_SSH_KNOWN_HOSTS:-/home/opc/.ssh/known_hosts_github}:/home/node/.ssh/known_hosts:ro
+      - /usr/bin/tailscale:/usr/local/bin/tailscale:ro
+      - /var/run/tailscale:/var/run/tailscale:ro
+    ports:
+      - "${OPENCLAW_GATEWAY_PORT:-18789}:18789"
+      - "${OPENCLAW_BRIDGE_PORT:-18790}:18790"
+    init: true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "dist/index.js", "health", "--json", "--timeout", "5000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      - autoheal=true
+    command:
+      - node
+      - dist/index.js
+      - gateway
+      - --bind
+      - ${OPENCLAW_GATEWAY_BIND:-lan}
+      - --port
+      - ${OPENCLAW_GATEWAY_PORT:-18789}
+
+  openclaw-cli:
+    image: ${OPENCLAW_IMAGE:-openclaw:local}
+    environment:
+      HOME: /home/node
+      TERM: xterm-256color
+      BROWSER: echo
+      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY}
+      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
+      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
+      PLUGGY_CLIENT_ID: ${PLUGGY_CLIENT_ID}
+      PLUGGY_CLIENT_SECRET: ${PLUGGY_CLIENT_SECRET}
+      PLUGGY_API_KEY: ${PLUGGY_API_KEY}
+      PLUGGY_BASE_URL: ${PLUGGY_BASE_URL}
+      PLUGGY_API_KEY_TTL_SECONDS: ${PLUGGY_API_KEY_TTL_SECONDS}
+      PLUGGY_CACHE_DIR: ${PLUGGY_CACHE_DIR}
+    volumes:
+      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+      - ${OPENCLAW_SSH_KEY:-/home/opc/.ssh/id_ed25519_github}:/home/node/.ssh/id_ed25519_github:ro
+      - ${OPENCLAW_SSH_CONFIG:-/home/opc/.ssh/config}:/home/node/.ssh/config:ro
+      - ${OPENCLAW_SSH_KNOWN_HOSTS:-/home/opc/.ssh/known_hosts_github}:/home/node/.ssh/known_hosts:ro
+      - /usr/bin/tailscale:/usr/local/bin/tailscale:ro
+      - /var/run/tailscale:/var/run/tailscale:ro
+    stdin_open: true
+    tty: true
+    init: true
+    entrypoint: ["node", "dist/index.js"]
+
+  autoheal:
+    image: willfarrell/autoheal
+    restart: unless-stopped
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal
+      AUTOHEAL_INTERVAL: 30
+      AUTOHEAL_START_PERIOD: 60
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

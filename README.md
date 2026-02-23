@@ -18,23 +18,39 @@ Repositorio principal do meu Homelab: infraestrutura, operacao e automacoes para
 - Midia: Jellyfin, Jellyseerr, Sonarr, Radarr, Bazarr, SABnzbd, Prowlarr.
 - Suporte: Uptime Kuma, Beszel, Homepage, CloudBeaver.
 - Automacao e IA: Lingarr, Whisper ASR.
+- Gateway/IA remoto: OpenClaw na Oracle VPS.
 - Infra: Colima (containerd), Tailscale, Terraform (Oracle Cloud).
 
 ## Estrutura
 - `assets/`: imagem e arquivos visuais do repositorio.
 - `infra/oracle/terraform/`: infraestrutura na OCI.
-- `hosts/`: configuracoes por host (`macmini` e placeholder `oracle-vps`).
-- `services/media/`: configs da stack Jellyfin/ARR/Lingarr.
-- `services/openclaw/`: snapshots e configs redacted do OpenClaw.
+- `hosts/`: configuracoes por host (`macmini` e `oracle-vps`).
+- `services/media/`: stack declarativa de midia/monitoramento (compose + env example + snapshots redacted).
+- `services/openclaw/`: snapshots e templates redacted do OpenClaw.
 - `ops/scripts/`: scripts operacionais organizados por contexto.
 - `notifications/apprise/`: templates de notificacao e integracao.
 - `docs/runbooks/`: notas operacionais e checklists.
 - `AGENTS.md`: playbook completo de operacao.
 
 ## Subir stack local (Mac mini)
+Fluxo declarativo recomendado:
+```bash
+cp services/media/.env.example services/media/.env.local
+# ajuste caminhos/segredos no .env.local
+docker compose --env-file services/media/.env.local -f services/media/docker-compose.yml up -d
+docker compose --env-file services/media/.env.local -f services/media/docker-compose.yml ps
+```
+
+Fluxo legado (scripts run/start individuais):
 ```bash
 ./ops/scripts/media/arr-start-stack.sh
 ./ops/scripts/media/arr-status.sh
+```
+
+## OpenClaw na Oracle VPS
+```bash
+ssh -i ~/.ssh/id_ed25519_oci opc@<IP_PUBLICO>
+sudo docker compose --env-file /opt/openclaw/.env -f /opt/openclaw/docker-compose.yml up -d
 ```
 
 ## Seguranca

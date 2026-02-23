@@ -1,0 +1,212 @@
+services:
+  apprise-api:
+    image: ${APPRISE_IMAGE}
+    container_name: apprise-api
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      APPRISE_STATELESS_URLS: ${APPRISE_STATELESS_URLS}
+      APPRISE_WORKER_COUNT: ${APPRISE_WORKER_COUNT}
+    ports:
+      - "${APPRISE_BIND_HOST}:${APPRISE_PORT}:8000"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/apprise-api/config:/config"
+      - "${ARR_CONFIG_ROOT}/apprise-api/attachments:/attachments"
+
+  jellyseerr:
+    image: ${JELLYSEERR_IMAGE}
+    container_name: jellyseerr
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+      LOG_LEVEL: ${JELLYSEERR_LOG_LEVEL}
+    ports:
+      - "${JELLYSEERR_BIND_HOST}:${JELLYSEERR_PORT}:5055"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/jellyseerr:/app/config"
+    depends_on:
+      - apprise-api
+
+  sabnzbd:
+    image: ${SABNZBD_IMAGE}
+    container_name: sabnzbd
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    ports:
+      - "${SABNZBD_BIND_HOST}:${SABNZBD_PORT}:8080"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/sabnzbd:/config"
+      - "${MEDIA_DOWNLOADS_ROOT}:/downloads"
+      - "${MEDIA_DOWNLOADS_ROOT}/incomplete:/incomplete-downloads"
+
+  sonarr:
+    image: ${SONARR_IMAGE}
+    container_name: sonarr
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    ports:
+      - "${SONARR_BIND_HOST}:${SONARR_PORT}:8989"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/sonarr:/config"
+      - "${MEDIA_ROOT}:/media"
+      - "${MEDIA_DOWNLOADS_ROOT}:/downloads"
+
+  radarr:
+    image: ${RADARR_IMAGE}
+    container_name: radarr
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    ports:
+      - "${RADARR_BIND_HOST}:${RADARR_PORT}:7878"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/radarr:/config"
+      - "${MEDIA_ROOT}:/media"
+      - "${MEDIA_DOWNLOADS_ROOT}:/downloads"
+
+  prowlarr:
+    image: ${PROWLARR_IMAGE}
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    ports:
+      - "${PROWLARR_BIND_HOST}:${PROWLARR_PORT}:9696"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/prowlarr:/config"
+
+  bazarr:
+    image: ${BAZARR_IMAGE}
+    container_name: bazarr
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    ports:
+      - "${BAZARR_BIND_HOST}:${BAZARR_PORT}:6767"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/bazarr:/config"
+      - "${MEDIA_ROOT}/Filmes:/movies"
+      - "${MEDIA_ROOT}/Series:/tv"
+
+  jellyfin:
+    image: ${JELLYFIN_IMAGE}
+    container_name: jellyfin
+    restart: unless-stopped
+    ports:
+      - "${JELLYFIN_BIND_HOST}:${JELLYFIN_PORT}:8096"
+    volumes:
+      - "${JELLYFIN_CONFIG_DIR}:/config"
+      - "${JELLYFIN_CACHE_DIR}:/cache"
+      - "${MEDIA_ROOT}:/media"
+
+  lingarr-db:
+    image: ${LINGARR_DB_IMAGE}
+    container_name: lingarr-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${LINGARR_DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${LINGARR_DB_NAME}
+      MARIADB_USER: ${LINGARR_DB_USER}
+      MARIADB_PASSWORD: ${LINGARR_DB_PASSWORD}
+    ports:
+      - "${LINGARR_DB_BIND_HOST}:${LINGARR_DB_PORT}:3306"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/lingarr-mysql:/var/lib/mysql"
+
+  lingarr:
+    image: ${LINGARR_IMAGE}
+    container_name: lingarr
+    restart: unless-stopped
+    depends_on:
+      - lingarr-db
+    environment:
+      ASPNETCORE_URLS: http://+:9876
+      DB_CONNECTION: mysql
+      DB_HOST: lingarr-db
+      DB_PORT: 3306
+      DB_DATABASE: ${LINGARR_DB_NAME}
+      DB_USERNAME: ${LINGARR_DB_USER}
+      DB_PASSWORD: ${LINGARR_DB_PASSWORD}
+      AUTH_ENABLED: ${LINGARR_AUTH_ENABLED}
+      SERVICE_TYPE: ${LINGARR_SERVICE_TYPE}
+      GEMINI_MODEL: ${LINGARR_GEMINI_MODEL}
+      GEMINI_API_KEY: ${LINGARR_GEMINI_API_KEY}
+      LOCAL_AI_ENDPOINT: ${LINGARR_LOCAL_AI_ENDPOINT}
+      LOCAL_AI_MODEL: ${LINGARR_LOCAL_AI_MODEL}
+      LOCAL_AI_API_KEY: ${LINGARR_LOCAL_AI_API_KEY}
+      MAX_CONCURRENT_JOBS: ${LINGARR_MAX_CONCURRENT_JOBS}
+    ports:
+      - "${LINGARR_BIND_HOST}:${LINGARR_PORT}:9876"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/lingarr:/app/config"
+      - "${MEDIA_ROOT}:/media"
+      - "${MEDIA_ROOT}/Filmes:/movies"
+      - "${MEDIA_ROOT}/Series:/tv"
+
+  whisper-asr:
+    image: ${WHISPER_ASR_IMAGE}
+    container_name: whisper-asr
+    restart: unless-stopped
+    environment:
+      ASR_MODEL: ${WHISPER_ASR_MODEL}
+      ASR_ENGINE: ${WHISPER_ASR_ENGINE}
+    ports:
+      - "${WHISPER_ASR_BIND_HOST}:${WHISPER_ASR_PORT}:9000"
+
+  uptime-kuma:
+    image: ${UPTIME_KUMA_IMAGE}
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      - "${UPTIME_KUMA_BIND_HOST}:${UPTIME_KUMA_PORT}:3001"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/uptime-kuma:/app/data"
+
+  beszel:
+    image: ${BESZEL_IMAGE}
+    container_name: beszel
+    restart: unless-stopped
+    environment:
+      APP_URL: ${BESZEL_APP_URL}
+    ports:
+      - "${BESZEL_BIND_HOST}:${BESZEL_PORT}:8090"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/beszel_data:/beszel_data"
+
+  homepage:
+    image: ${HOMEPAGE_IMAGE}
+    container_name: homepage
+    restart: unless-stopped
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
+    ports:
+      - "${HOMEPAGE_BIND_HOST}:${HOMEPAGE_PORT}:3000"
+    volumes:
+      - "${ARR_CONFIG_ROOT}/homepage:/app/config"
+
+  cloudbeaver:
+    image: ${CLOUDBEAVER_IMAGE}
+    container_name: cloudbeaver
+    restart: unless-stopped
+    environment:
+      DBEAVER_UID: ${CLOUDBEAVER_UID}
+      DBEAVER_GID: ${CLOUDBEAVER_GID}
+    ports:
+      - "${CLOUDBEAVER_BIND_HOST}:${CLOUDBEAVER_PORT}:8978"
+    volumes:
+      - "${ARR_CLOUDBEAVER_WORKSPACE}:/opt/cloudbeaver/workspace"
+      - "${ARR_CONFIG_ROOT}:/opt/sqlite"

@@ -15,7 +15,10 @@ Checklist para manter o Mac mini do homelab consistente.
 - Remover caminhos hardcoded de usuario antigo (`/Users/...`) antes de reaplicar.
 
 ## Stack de midia
-- Validar start/status:
+- Validar stack declarativa:
+  - `docker compose --env-file services/media/.env.local -f services/media/docker-compose.yml ps`
+  - `docker compose --env-file services/media/.env.local -f services/media/docker-compose.yml logs --tail 30 jellyseerr`
+- Fluxo legado (se necessario):
   - `./ops/scripts/media/arr-start-stack.sh`
   - `./ops/scripts/media/arr-status.sh`
 - Confirmar health das UIs (Jellyfin/ARR/Lingarr) apos reboot.
@@ -23,7 +26,7 @@ Checklist para manter o Mac mini do homelab consistente.
 
 ## Notificacoes
 - Confirmar webhook -> Apprise -> Telegram com mensagem de teste.
-- Padronizar payload para evitar `\\n` literal no Telegram.
+- Usar template versionado em `notifications/apprise/jellyseerr-webhook-template.json` para evitar `\\n` literal no Telegram.
 - Definir quais eventos sao obrigatorios (ex: download concluido, erro de indexer, health degraded).
 
 ## Backup e recuperacao

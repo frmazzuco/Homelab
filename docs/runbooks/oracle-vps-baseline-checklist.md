@@ -24,8 +24,9 @@ Checklist para garantir que a VPS Oracle esteja segura e operacional.
 
 ## Backup e DR
 - Definir backup de:
-  - `/home/opc/.clawdbot/`
-  - `/opt/moltbot/.env` (com criptografia)
+  - `/home/opc/.openclaw/`
+  - `/opt/openclaw/.env` (com criptografia)
+  - `/opt/openclaw/docker-compose.yml`
   - `/etc/systemd/system/*.service` e `*.timer`
   - arquivos de hardening (`sshd_config`, fail2ban, dnf-automatic)
 - Testar restore em host limpo (simulado) com periodicidade.

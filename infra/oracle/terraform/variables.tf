@@ -51,6 +51,18 @@ variable "ssh_user" {
   default     = "opc"
 }
 
+variable "gateway_repo_url" {
+  type        = string
+  description = "Repositorio Git clonado no bootstrap para executar o gateway OpenClaw."
+  default     = "https://github.com/openclaw/openclaw.git"
+}
+
+variable "gateway_repo_dir" {
+  type        = string
+  description = "Diretorio destino do clone no host remoto."
+  default     = "/opt/openclaw"
+}
+
 variable "allowed_ssh_cidrs" {
   type        = list(string)
   description = "CIDRs permitidos para SSH. Use seu IP publico/32."

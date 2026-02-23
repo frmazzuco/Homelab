@@ -2,9 +2,9 @@
 
 Conteudo especifico do host local do homelab.
 
-- `dotfiles/`: shell profiles versionados.
 - `launchagents/`: snapshots dos jobs do launchd (automacao local no macOS).
 - `configs/`: snapshots de configuracao de energia e Tailscale.
+- `services/media/docker-compose.yml`: stack declarativa usada na VM Colima.
 
 ## Observacoes importantes
 - Os `.plist` atuais sao snapshots reais e podem conter caminhos absolutos de outro usuario/host.
@@ -16,3 +16,7 @@ Conteudo especifico do host local do homelab.
 
 - Para baseline operacional do host, ver:
   - `docs/runbooks/macmini-baseline-checklist.md`
+
+- Estado validado (2026-02-23):
+  - Colima `default`: `8 CPU`, `12GiB`, `40GiB`, runtime `containerd`.
+  - Stack midia+monitoramento ativa (Jellyfin/ARR/Jellyseerr/Lingarr/Apprise/Uptime/Beszel/Homepage/CloudBeaver).

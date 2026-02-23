@@ -10,6 +10,8 @@ locals {
   cloud_init = templatefile("${path.module}/cloud-init.yaml.tftpl", {
     allowed_tcp_ports = var.allowed_tcp_ports
     ssh_user          = var.ssh_user
+    gateway_repo_url  = var.gateway_repo_url
+    gateway_repo_dir  = var.gateway_repo_dir
   })
 }
 

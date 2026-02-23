@@ -11,6 +11,8 @@ additional_ssh_public_keys = [
 ]
 allowed_ssh_cidrs    = ["SEU_IP_PUBLICO/32"]
 ssh_user             = "opc"
+gateway_repo_url     = "https://github.com/openclaw/openclaw.git"
+gateway_repo_dir     = "/opt/openclaw"
 instance_ocpus       = 4
 instance_memory_gbs  = 26
 boot_volume_size_gbs = 200
