@@ -200,13 +200,13 @@ Um timer systemd checa o status do healthcheck e envia alerta no Telegram
 quando muda para `unhealthy`/`missing`/`nohealth` e quando recupera.
 
 Arquivos no host:
-- Script: `/usr/local/bin/moltbot-health-check.sh`
-- Service: `/etc/systemd/system/moltbot-health-check.service`
-- Timer: `/etc/systemd/system/moltbot-health-check.timer`
-- Estado: `/var/lib/moltbot/health-status`
+- Script: `/usr/local/bin/openclaw-health-check.sh`
+- Service: `/etc/systemd/system/openclaw-health-check.service`
+- Timer: `/etc/systemd/system/openclaw-health-check.timer`
+- Estado: `/var/lib/openclaw/health-status`
 
 Status:
 ```bash
-sudo systemctl status moltbot-health-check.timer
-sudo systemctl status moltbot-health-check.service
+sudo systemctl status openclaw-health-check.timer
+sudo systemctl status openclaw-health-check.service
 ```

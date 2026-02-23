@@ -12,7 +12,7 @@ Espaco para snapshots operacionais e baseline do host da VPS Oracle.
   - `/etc/fail2ban/jail.d/sshd.local`
   - `/etc/dnf/automatic.conf`
 - Snapshots redacted de systemd:
-  - `moltbot-health-check.service/.timer`
+  - `openclaw-health-check.service/.timer`
   - `fail2ban-telegram-notify.service`
   - `ssh-login-telegram-notify.service`
 - Inventario de backup/restore (o que e backupado, onde e periodicidade).

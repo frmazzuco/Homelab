@@ -17,7 +17,7 @@ Checklist para garantir que a VPS Oracle esteja segura e operacional.
 
 ## Observabilidade e alertas
 - Services/timers ativos:
-  - `moltbot-health-check.timer`
+  - `openclaw-health-check.timer`
   - `fail2ban-telegram-notify.service`
   - `ssh-login-telegram-notify.service`
 - Alerta de teste no Telegram para cada fluxo.
