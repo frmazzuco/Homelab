@@ -15,6 +15,24 @@ services:
       - "${ARR_CONFIG_ROOT}/apprise-api/config:/config"
       - "${ARR_CONFIG_ROOT}/apprise-api/attachments:/attachments"
 
+  seerr-router:
+    build:
+      context: ./seerr-router
+      dockerfile: Dockerfile
+    image: ${SEERR_ROUTER_IMAGE}
+    container_name: seerr-router
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+      SEERR_ROUTER_APPRISE_URL: ${SEERR_ROUTER_APPRISE_URL}
+      SEERR_ROUTER_SHARED_TOKEN: ${SEERR_ROUTER_SHARED_TOKEN}
+      SEERR_ROUTER_DEFAULT_URLS: ${SEERR_ROUTER_DEFAULT_URLS}
+      SEERR_ROUTER_USER_DESTINATION_MAP: ${SEERR_ROUTER_USER_DESTINATION_MAP}
+      SEERR_ROUTER_HTTP_TIMEOUT_SECONDS: ${SEERR_ROUTER_HTTP_TIMEOUT_SECONDS}
+      SEERR_ROUTER_LOG_LEVEL: ${SEERR_ROUTER_LOG_LEVEL}
+    depends_on:
+      - apprise-api
+
   jellyseerr:
     image: ${JELLYSEERR_IMAGE}
     container_name: jellyseerr
@@ -27,7 +45,7 @@ services:
     volumes:
       - "${ARR_CONFIG_ROOT}/jellyseerr:/app/config"
     depends_on:
-      - apprise-api
+      - seerr-router
 
   sabnzbd:
     image: ${SABNZBD_IMAGE}

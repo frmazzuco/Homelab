@@ -3,15 +3,16 @@
 Stack declarativa da VM Colima (midia, notificacoes e monitoramento), espelhando o estado real validado em `2026-02-23`.
 
 ## Arquivos principais
-- `docker-compose.yml`: stack completa (15 servicos).
+- `docker-compose.yml`: stack completa (16 servicos).
 - `.env.example`: variaveis de paths, portas, imagens e segredos.
 - `configs/arr/`: snapshots redacted de configuracoes relevantes.
 - `configs/lingarr/`: template de runtime do Lingarr.
+- `seerr-router/`: servico FastAPI para roteamento de notificacoes por usuario.
 
 ## Servicos incluidos
 - Midia: `jellyfin`, `jellyseerr`, `sabnzbd`, `sonarr`, `radarr`, `prowlarr`, `bazarr`.
 - Automacao/IA: `lingarr`, `lingarr-db`, `whisper-asr`.
-- Notificacoes/monitoramento: `apprise-api`, `uptime-kuma`, `beszel`, `homepage`, `cloudbeaver`.
+- Notificacoes/monitoramento: `apprise-api`, `seerr-router`, `uptime-kuma`, `beszel`, `homepage`, `cloudbeaver`.
 
 ## Bootstrap rapido
 1. Copie o env base:
@@ -20,7 +21,7 @@ cp services/media/.env.example services/media/.env.local
 ```
 2. Ajuste no `.env.local`:
 - caminhos locais (`ARR_CONFIG_ROOT`, `MEDIA_ROOT`, `JELLYFIN_CONFIG_DIR`)
-- segredos (`APPRISE_STATELESS_URLS`, `LINGARR_*_PASSWORD`, `LINGARR_GEMINI_API_KEY`)
+- segredos (`APPRISE_STATELESS_URLS`, `SEERR_ROUTER_SHARED_TOKEN`, `LINGARR_*_PASSWORD`, `LINGARR_GEMINI_API_KEY`)
 - politica de exposicao de portas (`*_BIND_HOST`)
 3. Crie os diretorios-base (se ainda nao existirem):
 ```bash
@@ -59,11 +60,13 @@ docker compose --env-file services/media/.env.local -f services/media/docker-com
 docker compose --env-file services/media/.env.local -f services/media/docker-compose.yml down
 ```
 
-## Notificacoes (Jellyseerr -> Apprise -> Telegram)
-- `jellyseerr` usa webhook para `http://apprise-api:8000/notify/` (rede interna do compose).
-- Apprise faz fan-out para Telegram via `APPRISE_STATELESS_URLS`.
+## Notificacoes (Jellyseerr -> Seerr Router -> Apprise -> Telegram)
+- `jellyseerr` usa webhook para `http://seerr-router:8080/webhook/jellyseerr`.
+- `seerr-router` identifica o solicitante e aplica rota por usuario (`SEERR_ROUTER_USER_DESTINATION_MAP`).
+- `apprise-api` entrega no destino configurado para o usuario; se nao houver rota, usa fallback.
+- Fallback default: `SEERR_ROUTER_DEFAULT_URLS` (se vazio, usa `APPRISE_STATELESS_URLS` do Apprise).
 - Snapshot redacted atual: `configs/arr/jellyseerr.notifications.redacted.json`.
-- Template recomendado de payload: `notifications/apprise/jellyseerr-webhook-template.json`.
+- Template recomendado de payload: `notifications/apprise/jellyseerr-webhook-router-template.json`.
 
 ## Mapa de volumes
 - Config ARR: `${ARR_CONFIG_ROOT}/<servico>` -> diretories internos `/config`.

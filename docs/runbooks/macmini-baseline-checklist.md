@@ -25,8 +25,8 @@ Checklist para manter o Mac mini do homelab consistente.
 - Fixar tags de imagem (evitar `:latest`) para reduzir regressao inesperada.
 
 ## Notificacoes
-- Confirmar webhook -> Apprise -> Telegram com mensagem de teste.
-- Usar template versionado em `notifications/apprise/jellyseerr-webhook-template.json` para evitar `\\n` literal no Telegram.
+- Confirmar webhook -> seerr-router -> Apprise -> Telegram com mensagem de teste.
+- Usar template versionado em `notifications/apprise/jellyseerr-webhook-router-template.json`.
 - Definir quais eventos sao obrigatorios (ex: download concluido, erro de indexer, health degraded).
 
 ## Backup e recuperacao
@@ -34,4 +34,9 @@ Checklist para manter o Mac mini do homelab consistente.
   - `$HOME/arr/config/*`
   - bibliotecas/pastas de metadados criticas
   - snapshots de dotfiles e LaunchAgents
+- Backup automatico de bancos da stack:
+  - Script: `ops/scripts/media/media-db-backup.sh`
+  - LaunchAgent: `hosts/macmini/launchagents/com.francisco.media-db-backup.plist`
+  - Destino padrao: `$HOME/arr/backups/databases/stack-db-<timestamp>/`
+  - Retencao padrao: `14` dias (`RETENTION_DAYS`)
 - Validar restauracao em ambiente de teste periodicamente.
