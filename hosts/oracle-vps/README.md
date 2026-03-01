@@ -11,7 +11,6 @@ Baseline operacional da VPS Oracle onde roda o gateway OpenClaw.
 - Timers/services ativos:
   - `openclaw-health-check.timer`
   - `fail2ban`
-  - `ssh-login-telegram-notify.service`
   - `dnf-automatic.timer`
 
 ## Caminhos relevantes no host
@@ -30,5 +29,5 @@ Baseline operacional da VPS Oracle onde roda o gateway OpenClaw.
 ```bash
 ssh -i ~/.ssh/id_ed25519_oci opc@<IP_PUBLICO>
 sudo docker compose --env-file /opt/openclaw/.env -f /opt/openclaw/docker-compose.yml ps
-sudo systemctl status openclaw-health-check.timer fail2ban ssh-login-telegram-notify.service dnf-automatic.timer
+sudo systemctl status openclaw-health-check.timer fail2ban dnf-automatic.timer
 ```

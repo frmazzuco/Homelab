@@ -19,7 +19,6 @@ Checklist para garantir que a VPS Oracle esteja segura e operacional.
 - Services/timers ativos:
   - `openclaw-health-check.timer`
   - `fail2ban-telegram-notify.service`
-  - `ssh-login-telegram-notify.service`
 - Alerta de teste no Telegram para cada fluxo.
 
 ## Backup e DR

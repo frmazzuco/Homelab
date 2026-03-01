@@ -29,7 +29,7 @@ Ambiente atual:
 - Host: `always-free-2gb`.
 - Stack OpenClaw ativa em `/opt/openclaw`.
 - Containers ativos: `openclaw-openclaw-gateway-1`, `openclaw-autoheal-1`.
-- Timers/services ativos: `openclaw-health-check.timer`, `fail2ban`, `ssh-login-telegram-notify.service`, `dnf-automatic.timer`.
+- Timers/services ativos: `openclaw-health-check.timer`, `fail2ban`, `dnf-automatic.timer`.
 
 ## Mac mini: stack declarativa (replicavel)
 A stack declarativa principal esta em:
@@ -107,13 +107,11 @@ sudo fail2ban-client status sshd
 
 ### Alertas Telegram (seguranca e saude)
 - Ban/unban: `fail2ban-telegram-notify.service`
-- Login SSH aceito: `ssh-login-telegram-notify.service`
 - Health OpenClaw: `openclaw-health-check.timer`
 
 Checks:
 ```bash
 sudo systemctl status fail2ban-telegram-notify
-sudo systemctl status ssh-login-telegram-notify
 sudo systemctl status openclaw-health-check.timer
 ```
 
