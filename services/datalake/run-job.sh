@@ -18,28 +18,40 @@ EXIT_CODE=$?
 END=$(date +%s)
 DURATION=$((END - START))
 
+# Log full output locally
+echo "$OUTPUT" | tail -10
+echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Exit: $EXIT_CODE (${DURATION}s)"
+
+# Build notification
 if [ $EXIT_CODE -eq 0 ]; then
-    STATUS="✅"
-    TITLE="Datalake: $JOB_NAME OK"
     TYPE="success"
+    TITLE="✅ Datalake: $JOB_NAME"
+    BODY="Concluído em ${DURATION}s"
 else
-    STATUS="❌"
-    TITLE="Datalake: $JOB_NAME FALHOU"
     TYPE="failure"
+    TITLE="❌ Datalake: $JOB_NAME"
+    # Get last meaningful error line
+    ERR=$(echo "$OUTPUT" | grep -iE "error|falha|exception|errno" | tail -1 | head -c 200)
+    [ -z "$ERR" ] && ERR=$(echo "$OUTPUT" | tail -1 | head -c 200)
+    BODY="Falhou em ${DURATION}s — $ERR"
 fi
 
-# Log
-echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $STATUS $JOB_NAME (${DURATION}s, exit $EXIT_CODE)"
-echo "$OUTPUT" | tail -5
-
-# Notify via Apprise default config (uses apprise.yml)
+# Send via Apprise default config
 if [ $EXIT_CODE -ne 0 ] || [ "${NOTIFY_ON_SUCCESS}" = "true" ]; then
-    BODY=$(printf "%s **%s** — %ss\n\n%s" "$STATUS" "$JOB_NAME" "$DURATION" "$(echo "$OUTPUT" | tail -10 | head -c 400)")
-    
-    curl -s -X POST "${APPRISE_URL}/notify/" \
-        -H "Content-Type: application/json" \
-        --data-binary "$(printf '{"title":"%s","body":"%s","type":"%s"}' "$TITLE" "$(echo "$BODY" | sed 's/"/\\"/g' | tr '\n' ' ')" "$TYPE")" \
-        > /dev/null 2>&1 || echo "Warning: Apprise notification failed"
+    # Use Python for clean JSON encoding
+    python3 -c "
+import json, urllib.request
+data = json.dumps({
+    'title': '''$TITLE''',
+    'body': '''$BODY''',
+    'type': '$TYPE'
+}).encode()
+req = urllib.request.Request('${APPRISE_URL}/notify/', data=data, headers={'Content-Type': 'application/json'})
+try:
+    urllib.request.urlopen(req, timeout=10)
+except Exception as e:
+    print(f'Warning: Apprise failed: {e}')
+" 2>&1
 fi
 
 exit $EXIT_CODE
