@@ -2,26 +2,23 @@ FROM python:3.11-slim
 
 ARG TARGETARCH
 
-# Install supercronic + curl + DuckDB CLI
 RUN apt-get update && apt-get install -y --no-install-recommends curl unzip && \
-    # Supercronic
     curl -fsSL "https://github.com/aptible/supercronic/releases/download/v0.2.33/supercronic-linux-${TARGETARCH}" \
       -o /usr/local/bin/supercronic && chmod +x /usr/local/bin/supercronic && \
-    # DuckDB CLI
     curl -fsSL "https://github.com/duckdb/duckdb/releases/download/v1.2.2/duckdb_cli-linux-aarch64.zip" \
-      -o /tmp/duckdb.zip && python3 -c "import zipfile; zipfile.ZipFile('/tmp/duckdb.zip').extractall('/usr/local/bin/')" && \
-    chmod +x /usr/local/bin/duckdb && rm /tmp/duckdb.zip && \
-    # Cleanup
+      -o /tmp/duckdb.zip && \
+    python3 -c "import zipfile; zipfile.ZipFile('/tmp/duckdb.zip').extractall('/usr/local/bin/')" && \
+    chmod +x /usr/local/bin/duckdb && ln -sf /usr/local/bin/duckdb /tmp/duckdb && \
+    rm /tmp/duckdb.zip && \
     apt-get purge -y unzip && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
-# Python deps
 RUN pip install --no-cache-dir duckdb requests
 
 WORKDIR /app
 
 COPY crontab /app/crontab
 COPY run-job.sh /app/run-job.sh
-RUN chmod +x /app/run-job.sh
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/run-job.sh /app/entrypoint.sh
 
-ENTRYPOINT ["/bin/sh", "-c"]
-CMD ["/usr/local/bin/supercronic /app/crontab"]
+CMD ["/app/entrypoint.sh"]
