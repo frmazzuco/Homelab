@@ -1,0 +1,1160 @@
+{
+  "dashboard": {
+    "panels": [
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "blue",
+              "mode": "fixed"
+            }
+          }
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "Filmes",
+                "type": "number"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT total_items as value FROM jellyfin_library_summary WHERE item_type = 'Movie'\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udfac Total Filmes",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "purple",
+              "mode": "fixed"
+            }
+          }
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 4,
+          "y": 0
+        },
+        "id": 2,
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "Epis\u00f3dios",
+                "type": "number"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT total_items as value FROM jellyfin_library_summary WHERE item_type = 'Episode'\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcfa Total Epis\u00f3dios",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "orange",
+              "mode": "fixed"
+            },
+            "unit": "decgbytes"
+          }
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 8,
+          "y": 0
+        },
+        "id": 3,
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "GB",
+                "type": "number"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT ROUND(COALESCE((SELECT SUM(total_size_gb) FROM jellyfin_library_summary), 0), 1) as value\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcbe Espa\u00e7o Total",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "yellow",
+              "mode": "fixed"
+            },
+            "decimals": 1,
+            "max": 10
+          }
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 12,
+          "y": 0
+        },
+        "id": 4,
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "Nota",
+                "type": "number"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT avg_rating as value FROM jellyfin_library_summary WHERE item_type = 'Movie'\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\u2b50 Nota M\u00e9dia",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            },
+            "decimals": 1,
+            "unit": "h"
+          }
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 16,
+          "y": 0
+        },
+        "id": 5,
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "Horas",
+                "type": "number"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT ROUND(COALESCE((SELECT SUM(avg_runtime * total_items) FROM jellyfin_library_summary), 0) / 60.0, 1) as value\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\u23f1\ufe0f Tempo Total",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "#73BF69",
+              "mode": "fixed"
+            },
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "color-text"
+              },
+              "filterable": false,
+              "inspect": false
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Filme"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 200
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background-solid"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "dark-green",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 4,
+          "x": 20,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "footer": {
+            "show": false
+          },
+          "frameIndex": 0,
+          "showHeader": false
+        },
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "Filme",
+                "type": "string"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT name as Filme FROM jellyfin_latest_movie\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udd95 \u00daltimo Adicionado",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Nota"
+              },
+              "properties": [
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": null
+                      },
+                      {
+                        "color": "orange",
+                        "value": 6
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 7
+                      },
+                      {
+                        "color": "green",
+                        "value": 8
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "GB"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "decgbytes"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 16,
+          "x": 0,
+          "y": 5
+        },
+        "id": 7,
+        "options": {
+          "footer": {
+            "countRows": true,
+            "fields": "",
+            "reducer": [
+              "sum",
+              "count"
+            ],
+            "show": true
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "Adicionado"
+            }
+          ]
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                        SELECT \\n                            name as Filme,\\n                            production_year as Ano,\\n                            ROUND(community_rating, 1) as Nota,\\n                            runtime_minutes as \\\"Min\\\",\\n                            ROUND(file_size_gb, 1) as \\\"GB\\\",\\n                            video_codec as Codec,\\n                            resolution as Resolu\\u00e7\\u00e3o,\\n                            genres as G\\u00eaneros,\\n                            CAST(date_created AS VARCHAR)[:10] as Adicionado\\n                        FROM jellyfin_library\\n                        WHERE item_type = 'Movie'\\n                        ORDER BY date_created DESC\\n                    \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udfac Cat\u00e1logo de Filmes",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 8,
+          "x": 16,
+          "y": 5
+        },
+        "id": 8,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "values": [
+              "value",
+              "percent"
+            ]
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^count$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                        SELECT genre, count FROM jellyfin_genre_stats ORDER BY count DESC LIMIT 10\\n                    \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udfad G\u00eaneros",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Nota"
+              },
+              "properties": [
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": null
+                      },
+                      {
+                        "color": "orange",
+                        "value": 7
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 8
+                      },
+                      {
+                        "color": "green",
+                        "value": 9
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 0,
+          "y": 17
+        },
+        "id": 9,
+        "options": {
+          "footer": {
+            "countRows": true,
+            "fields": "",
+            "reducer": [
+              "sum",
+              "count"
+            ],
+            "show": true
+          },
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                        SELECT \\n                            series_name as S\\u00e9rie,\\n                            season_name as Temporada,\\n                            'E' || LPAD(CAST(episode_index AS VARCHAR), 2, '0') as Ep,\\n                            name as T\\u00edtulo,\\n                            ROUND(community_rating, 1) as Nota,\\n                            ROUND(file_size_gb, 1) as \\\"GB\\\",\\n                            CAST(date_created AS VARCHAR)[:10] as Adicionado\\n                        FROM jellyfin_library\\n                        WHERE item_type = 'Episode'\\n                        ORDER BY series_name, episode_index\\n                    \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcfa S\u00e9ries & Epis\u00f3dios",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-BlYlRd"
+            },
+            "decimals": 1,
+            "unit": "decgbytes"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 12,
+          "y": 17
+        },
+        "id": 10,
+        "options": {
+          "barWidth": 0.7,
+          "legend": {
+            "displayMode": "hidden"
+          },
+          "orientation": "horizontal",
+          "tooltip": {
+            "mode": "single"
+          },
+          "xTickLabelRotation": 0
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                        SELECT \\n                            name || ' (' || CAST(production_year AS VARCHAR) || ')' as Filme,\\n                            ROUND(file_size_gb, 1) as \\\"Tamanho (GB)\\\"\\n                        FROM jellyfin_library\\n                        WHERE item_type = 'Movie' AND file_size_gb IS NOT NULL\\n                        ORDER BY file_size_gb DESC\\n                    \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcbe Espa\u00e7o por Filme",
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "blue",
+              "mode": "fixed"
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 27
+        },
+        "id": 11,
+        "options": {
+          "barWidth": 0.8,
+          "legend": {
+            "displayMode": "hidden"
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                        SELECT \\n                            CAST(date_trunc('week', date_created) AS VARCHAR)[:10] as Semana,\\n                            COUNT(*) as Adicionados,\\n                            ROUND(SUM(file_size_gb), 1) as \\\"GB Total\\\"\\n                        FROM jellyfin_library\\n                        WHERE item_type IN ('Movie', 'Episode')\\n                        AND date_created >= '${__from:date:YYYY-MM-DD}'\\n                        AND date_created <= '${__to:date:YYYY-MM-DD}'\\n                        GROUP BY date_trunc('week', date_created)\\n                        ORDER BY Semana\\n                    \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcc5 Filmes Adicionados por Semana",
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 24,
+          "x": 0,
+          "y": 35
+        },
+        "id": 12,
+        "options": {
+          "content": "## \ud83d\udcca Atividade de Reprodu\u00e7\u00e3o",
+          "mode": "markdown"
+        },
+        "title": "",
+        "type": "text"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Horas"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "h"
+                },
+                {
+                  "id": "decimals",
+                  "value": 1
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 10
+                      },
+                      {
+                        "color": "orange",
+                        "value": 30
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 37
+        },
+        "id": 13,
+        "options": {
+          "footer": {
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT usuario as Usu\\u00e1rio, titulos_assistidos as T\\u00edtulos, sessoes as Sess\\u00f5es, minutos_total as Minutos, horas_total as Horas, CAST(ultima_sessao AS VARCHAR)[:16] as \\\"\\u00daltima Sess\\u00e3o\\\" FROM jellyfin_user_stats\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udc65 Estat\u00edsticas por Usu\u00e1rio",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Min"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "m"
+                },
+                {
+                  "id": "decimals",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 14,
+          "x": 0,
+          "y": 43
+        },
+        "id": 14,
+        "options": {
+          "footer": {
+            "countRows": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "In\u00edcio"
+            }
+          ]
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT \\n                    user_name as Usu\\u00e1rio,\\n                    item_name as T\\u00edtulo,\\n                    device as Dispositivo,\\n                    CAST(start_time AS VARCHAR)[:16] as In\\u00edcio,\\n                    duration_minutes as \\\"Min\\\"\\n                FROM jellyfin_watch_sessions \\n                WHERE duration_minutes > 1 AND duration_minutes < 600\\n                ORDER BY start_time DESC\\n                LIMIT 30\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udd50 \u00daltimas Reprodu\u00e7\u00f5es",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Min Total"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "m"
+                },
+                {
+                  "id": "decimals",
+                  "value": 0
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "mode": "basic",
+                    "type": "gauge"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-BlYlRd"
+                  }
+                },
+                {
+                  "id": "max",
+                  "value": 300
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 10,
+          "x": 14,
+          "y": 43
+        },
+        "id": 15,
+        "options": {
+          "footer": {
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": true
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT \\n                    item_name as T\\u00edtulo,\\n                    COUNT(DISTINCT user_name) as Usu\\u00e1rios,\\n                    COUNT(*) as Sess\\u00f5es,\\n                    ROUND(SUM(duration_minutes), 0) as \\\"Min Total\\\"\\n                FROM jellyfin_watch_sessions\\n                WHERE duration_minutes > 1 AND duration_minutes < 600\\n                GROUP BY item_name\\n                ORDER BY \\\"Min Total\\\" DESC\\n                LIMIT 15\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udfc6 Mais Assistidos",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 53
+        },
+        "id": 16,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "values": [
+              "value",
+              "percent"
+            ]
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^Sess\u00f5es$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT device as Dispositivo, COUNT(*) as Sess\\u00f5es\\n                FROM jellyfin_watch_sessions\\n                WHERE duration_minutes > 1 AND duration_minutes < 600\\n                GROUP BY device\\n                ORDER BY Sess\\u00f5es DESC\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcf1 Dispositivos",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 0,
+            "unit": "m"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "barbara"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#FF6384",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "fmazzuco"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#36A2EB",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "root"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#FFCE56",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 16,
+          "x": 8,
+          "y": 53
+        },
+        "id": 17,
+        "options": {
+          "barWidth": 0.8,
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "stacking": "normal",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT \\n                    CAST(start_time AS DATE) as Dia,\\n                    SUM(CASE WHEN user_name = 'barbara' THEN duration_minutes ELSE 0 END) as barbara,\\n                    SUM(CASE WHEN user_name = 'fmazzuco' THEN duration_minutes ELSE 0 END) as fmazzuco,\\n                    SUM(CASE WHEN user_name = 'root' THEN duration_minutes ELSE 0 END) as root\\n                FROM jellyfin_watch_sessions\\n                WHERE duration_minutes > 1 AND duration_minutes < 600\\n                GROUP BY CAST(start_time AS DATE)\\n                ORDER BY Dia\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcc5 Atividade por Dia",
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 0,
+            "unit": "m"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "barbara"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#FF6384",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "fmazzuco"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#36A2EB",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "root"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#FFCE56",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 24,
+          "x": 0,
+          "y": 61
+        },
+        "id": 18,
+        "options": {
+          "barWidth": 0.7,
+          "groupWidth": 0.8,
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "orientation": "horizontal",
+          "stacking": "normal",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT genero as G\\u00eanero,\\n                    SUM(CASE WHEN usuario = 'barbara' THEN minutos ELSE 0 END) as \\\"barbara\\\",\\n                    SUM(CASE WHEN usuario = 'fmazzuco' THEN minutos ELSE 0 END) as \\\"fmazzuco\\\",\\n                    SUM(CASE WHEN usuario = 'root' THEN minutos ELSE 0 END) as \\\"root\\\"\\n                FROM jellyfin_user_genres\\n                GROUP BY genero\\n                ORDER BY SUM(minutos) DESC\\n                LIMIT 12\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udfad G\u00eaneros Favoritos por Usu\u00e1rio",
+        "type": "barchart"
+      }
+    ],
+    "tags": [
+      "jellyfin",
+      "datalake"
+    ],
+    "time": {
+      "from": "now-1y",
+      "to": "now"
+    },
+    "timezone": "browser",
+    "title": "\ud83c\udfac Jellyfin - Biblioteca de M\u00eddia",
+    "uid": "jellyfin-datalake"
+  },
+  "overwrite": true,
+  "folderId": 0
+}

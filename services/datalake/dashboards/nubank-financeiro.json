@@ -1,0 +1,1013 @@
+{
+  "dashboard": {
+    "editable": true,
+    "panels": [
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 2,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 6400
+                },
+                {
+                  "color": "red",
+                  "value": 8000
+                }
+              ]
+            },
+            "unit": "currencyBRL"
+          }
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "Gasto",
+                "type": "number"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT ROUND(SUM(amount), 2) as total \\n                FROM nubank_transactions \\n                WHERE account_type = 'credit_card' \\n                AND amount > 0 \\n                AND category != 'Credit card payment'\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcb3 Gasto Total (Per\u00edodo Selecionado)",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            },
+            "decimals": 2,
+            "unit": "currencyBRL"
+          }
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 6,
+          "y": 0
+        },
+        "id": 2,
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "Receita",
+                "type": "number"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT ROUND(SUM(ABS(amount)), 2) as total \\n                FROM nubank_transactions \\n                WHERE account_type = 'credit_card' \\n                AND amount < 0\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcb5 Receitas (Per\u00edodo Selecionado)",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short"
+          }
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 12,
+          "y": 0
+        },
+        "id": 3,
+        "targets": [
+          {
+            "columns": [
+              {
+                "selector": "[0]",
+                "text": "Total",
+                "type": "number"
+              }
+            ],
+            "format": "table",
+            "refId": "A",
+            "root_selector": "rows",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT COUNT(*) as total \\n                FROM nubank_transactions \\n                WHERE account_type = 'credit_card'\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udd22 Transa\u00e7\u00f5es (M\u00eas)",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Gastos"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 3000
+                      },
+                      {
+                        "color": "red",
+                        "value": 6000
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Receitas"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Saldo"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": null
+                      },
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 4
+        },
+        "id": 4,
+        "options": {
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT \\n                    mes as M\\u00eas, \\n                    ROUND(gastos, 2) as Gastos, \\n                    ROUND(receitas, 2) as Receitas, \\n                    ROUND(receitas - gastos, 2) as Saldo \\n                FROM nubank_monthly_summary \\n                WHERE account_type = 'credit_card' \\n                AND mes >= strftime(DATE '${__from:date:YYYY-MM-DD}', '%Y-%m')\\n                AND mes <= strftime(DATE '${__to:date:YYYY-MM-DD}', '%Y-%m')\\n                ORDER BY mes DESC\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcca Resumo Mensal (Per\u00edodo Selecionado)",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Total"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-GrYlRd"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Ticket M\u00e9dio"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 4
+        },
+        "id": 5,
+        "options": {
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT \\n                    category as Categoria,\\n                    COUNT(*) as Transa\\u00e7\\u00f5es,\\n                    ROUND(SUM(ABS(amount)), 2) as Total,\\n                    ROUND(AVG(ABS(amount)), 2) as \\\"Ticket M\\u00e9dio\\\"\\n                FROM nubank_transactions\\n                WHERE account_type = 'credit_card'\\n                AND amount > 0\\n                AND category NOT IN ('Credit card payment')\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n                GROUP BY category\\n                ORDER BY Total DESC\\n                LIMIT 10\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udfc6 Top 10 Categorias (Per\u00edodo Selecionado)",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Valor (R$)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 100
+                      },
+                      {
+                        "color": "orange",
+                        "value": 500
+                      },
+                      {
+                        "color": "red",
+                        "value": 1000
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Data"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 120
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 12
+        },
+        "id": 6,
+        "options": {
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT \\n                    date as Data,\\n                    description as Descri\\u00e7\\u00e3o,\\n                    category as Categoria,\\n                    ROUND(ABS(amount), 2) as \\\"Valor (R$)\\\"\\n                FROM nubank_transactions\\n                WHERE account_type = 'credit_card'\\n                AND amount > 0\\n                AND category NOT IN ('Credit card payment')\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n                ORDER BY ABS(amount) DESC\\n                LIMIT 20\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcb8 Maiores Gastos (Per\u00edodo Selecionado)",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "uid": "cfer8evtoz4zkc"
+        },
+        "fieldConfig": {
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Total (R$)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-BlYlRd"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Ticket M\u00e9dio"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Compras"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-GrYlRd"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 20
+        },
+        "id": 7,
+        "options": {
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT \\n                    description as Estabelecimento,\\n                    COUNT(*) as Compras,\\n                    ROUND(AVG(ABS(amount)), 2) as \\\"Ticket M\\u00e9dio\\\",\\n                    ROUND(SUM(ABS(amount)), 2) as \\\"Total (R$)\\\"\\n                FROM nubank_transactions\\n                WHERE account_type = 'credit_card'\\n                AND amount > 0\\n                AND category NOT IN ('Credit card payment')\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n                GROUP BY description\\n                ORDER BY \\\"Total (R$)\\\" DESC\\n                LIMIT 15\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udfea Top 15 Estabelecimentos (Per\u00edodo Selecionado)",
+        "type": "table"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Valor M\u00e9dio"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Total Pago"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "continuous-BlYlRd"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 0,
+          "y": 30
+        },
+        "id": 8,
+        "options": {
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT \\n                    description as Servi\\u00e7o,\\n                    CASE \\n                        WHEN description ILIKE '%spotify%' THEN '\\ud83c\\udfb5 M\\u00fasica'\\n                        WHEN description ILIKE '%netflix%' THEN '\\ud83c\\udfac Streaming'\\n                        WHEN description ILIKE '%disney%' OR description ILIKE '%walt disney%' THEN '\\ud83c\\udfac Streaming'\\n                        WHEN description ILIKE '%hbo%' OR description ILIKE '%helphbomax%' THEN '\\ud83c\\udfac Streaming'\\n                        WHEN description ILIKE '%youtube%' THEN '\\ud83c\\udfac Streaming'\\n                        WHEN description ILIKE '%openai%' OR description ILIKE '%chatgpt%' THEN '\\ud83e\\udd16 IA'\\n                        WHEN description ILIKE '%claude%' THEN '\\ud83e\\udd16 IA'\\n                        WHEN description ILIKE '%apple%' THEN '\\ud83d\\udcf1 Apple'\\n                        WHEN description ILIKE '%crossover%' THEN '\\ud83d\\udcbb Software'\\n                        ELSE '\\ud83d\\udce6 Outros'\\n                    END as Tipo,\\n                    COUNT(*) as Cobran\\u00e7as,\\n                    ROUND(AVG(ABS(amount)), 2) as \\\"Valor M\\u00e9dio\\\",\\n                    ROUND(SUM(ABS(amount)), 2) as \\\"Total Pago\\\"\\n                FROM nubank_transactions \\n                WHERE category IN ('Music streaming', 'Video streaming', 'Digital services')\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n                GROUP BY description, Tipo\\n                ORDER BY \\\"Total Pago\\\" DESC\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83c\udfac Assinaturas & Streaming (Mensal Estimado)",
+        "type": "table"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyBRL"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 12,
+          "x": 12,
+          "y": 30
+        },
+        "id": 9,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "values": [
+              "value",
+              "percent"
+            ]
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^Total$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT \\n                    category as Categoria,\\n                    ROUND(SUM(ABS(amount)), 2) as Total\\n                FROM nubank_transactions \\n                WHERE account_type = 'credit_card' \\n                AND amount > 0\\n                AND category NOT IN ('Credit card payment')\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n                GROUP BY category \\n                ORDER BY Total DESC\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcb0 Gastos por Categoria (Cart\u00e3o)",
+        "type": "piechart"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {
+            "decimals": 2,
+            "unit": "currencyBRL"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\ud83e\udd16 IA"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "purple",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\ud83c\udfac Streaming"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "blue",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\ud83d\udcf1 Apps/Software"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "orange",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "\ud83d\udce6 Outros Digital"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#808080",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 24,
+          "x": 0,
+          "y": 40
+        },
+        "id": 10,
+        "options": {
+          "barWidth": 0.7,
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "stacking": "normal",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"SELECT \\n                    strftime(date, '%Y-%m') as M\\u00eas,\\n                    ROUND(SUM(CASE WHEN description ILIKE '%openai%' OR description ILIKE '%chatgpt%' OR description ILIKE '%claude%' THEN ABS(amount) ELSE 0 END), 2) as \\\"\\ud83e\\udd16 IA\\\",\\n                    ROUND(SUM(CASE WHEN description ILIKE '%netflix%' OR description ILIKE '%disney%' OR description ILIKE '%hbo%' OR description ILIKE '%helphbomax%' OR description ILIKE '%youtube%' OR description ILIKE '%spotify%' THEN ABS(amount) ELSE 0 END), 2) as \\\"\\ud83c\\udfac Streaming\\\",\\n                    ROUND(SUM(CASE WHEN description ILIKE '%apple%' OR description ILIKE '%crossover%' THEN ABS(amount) ELSE 0 END), 2) as \\\"\\ud83d\\udcf1 Apps/Software\\\",\\n                    ROUND(SUM(CASE WHEN category IN ('Music streaming','Video streaming','Digital services') AND description NOT ILIKE '%openai%' AND description NOT ILIKE '%chatgpt%' AND description NOT ILIKE '%claude%' AND description NOT ILIKE '%netflix%' AND description NOT ILIKE '%disney%' AND description NOT ILIKE '%hbo%' AND description NOT ILIKE '%helphbomax%' AND description NOT ILIKE '%youtube%' AND description NOT ILIKE '%spotify%' AND description NOT ILIKE '%apple%' AND description NOT ILIKE '%crossover%' THEN ABS(amount) ELSE 0 END), 2) as \\\"\\ud83d\\udce6 Outros Digital\\\"\\n                FROM nubank_transactions \\n                WHERE category IN ('Music streaming', 'Video streaming', 'Digital services')\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n                GROUP BY strftime(date, '%Y-%m')\\n                ORDER BY M\\u00eas\"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udcc8 Custo Mensal: IA vs Streaming vs Outros",
+        "type": "barchart"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Valor (R$)"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "currencyBRL"
+                },
+                {
+                  "id": "decimals",
+                  "value": 2
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "color": "orange",
+                        "value": 50
+                      },
+                      {
+                        "color": "red",
+                        "value": 200
+                      },
+                      {
+                        "color": "dark-red",
+                        "value": 500
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Tipo"
+              },
+              "properties": [
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                },
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "Gasto": {
+                          "color": "red",
+                          "text": "\ud83d\udd34 Gasto"
+                        }
+                      },
+                      "type": "value"
+                    },
+                    {
+                      "options": {
+                        "Pagamento": {
+                          "color": "green",
+                          "text": "\ud83d\udfe2 Pagamento"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Data"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 110
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 24,
+          "x": 0,
+          "y": 50
+        },
+        "id": 11,
+        "options": {
+          "footer": {
+            "countRows": true,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": true
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "Data"
+            }
+          ]
+        },
+        "targets": [
+          {
+            "format": "table",
+            "refId": "A",
+            "source": "url",
+            "type": "json",
+            "url": "http://localhost:8089/query",
+            "url_options": {
+              "data": "{\"query\": \"\\n                SELECT \\n                    CAST(date AS VARCHAR) as Data,\\n                    description as Descri\\u00e7\\u00e3o,\\n                    category as Categoria,\\n                    CASE \\n                        WHEN amount > 0 THEN 'Gasto'\\n                        ELSE 'Pagamento'\\n                    END as Tipo,\\n                    ROUND(ABS(amount), 2) as \\\"Valor (R$)\\\"\\n                FROM nubank_transactions\\n                WHERE account_type = 'credit_card'\\n                AND date >= '${__from:date:YYYY-MM-DD}' \\n                AND date <= '${__to:date:YYYY-MM-DD}'\\n                ORDER BY date DESC, ABS(amount) DESC\\n            \"}",
+              "method": "POST"
+            }
+          }
+        ],
+        "title": "\ud83d\udccb Todas as Transa\u00e7\u00f5es",
+        "type": "table"
+      }
+    ],
+    "refresh": "1h",
+    "schemaVersion": 38,
+    "tags": [
+      "nubank",
+      "financeiro"
+    ],
+    "time": {
+      "from": "now/M",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5m",
+        "15m",
+        "30m",
+        "1h"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "\ud83d\udcb0 Nubank - An\u00e1lise Financeira",
+    "uid": "2f831d9d-3cf8-4c3a-868f-050fef3fc1d4"
+  },
+  "overwrite": true,
+  "folderId": 0
+}
