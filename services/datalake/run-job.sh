@@ -7,7 +7,6 @@ shift
 COMMAND="$@"
 
 APPRISE_URL="${APPRISE_URL:-http://apprise-api:8000}"
-APPRISE_NOTIFY_URLS="${APPRISE_NOTIFY_URLS:-}"
 
 START=$(date +%s)
 echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Starting: $JOB_NAME"
@@ -33,20 +32,14 @@ fi
 echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $STATUS $JOB_NAME (${DURATION}s, exit $EXIT_CODE)"
 echo "$OUTPUT" | tail -5
 
-# Notify Apprise (only on failure, or if NOTIFY_ON_SUCCESS=true)
-if [ -n "$APPRISE_NOTIFY_URLS" ]; then
-    if [ $EXIT_CODE -ne 0 ] || [ "${NOTIFY_ON_SUCCESS}" = "true" ]; then
-        BODY="$STATUS **$JOB_NAME** — ${DURATION}s\n\n$(echo "$OUTPUT" | tail -10)"
-        
-        curl -s -X POST "${APPRISE_URL}/notify/" \
-            -H "Content-Type: application/json" \
-            -d "{
-                \"urls\": [\"${APPRISE_NOTIFY_URLS}\"],
-                \"title\": \"${TITLE}\",
-                \"body\": \"$(echo "$BODY" | sed 's/"/\\"/g' | head -c 500)\",
-                \"type\": \"${TYPE}\"
-            }" > /dev/null 2>&1 || echo "Warning: Apprise notification failed"
-    fi
+# Notify via Apprise default config (uses apprise.yml)
+if [ $EXIT_CODE -ne 0 ] || [ "${NOTIFY_ON_SUCCESS}" = "true" ]; then
+    BODY=$(printf "%s **%s** — %ss\n\n%s" "$STATUS" "$JOB_NAME" "$DURATION" "$(echo "$OUTPUT" | tail -10 | head -c 400)")
+    
+    curl -s -X POST "${APPRISE_URL}/notify/" \
+        -H "Content-Type: application/json" \
+        --data-binary "$(printf '{"title":"%s","body":"%s","type":"%s"}' "$TITLE" "$(echo "$BODY" | sed 's/"/\\"/g' | tr '\n' ' ')" "$TYPE")" \
+        > /dev/null 2>&1 || echo "Warning: Apprise notification failed"
 fi
 
 exit $EXIT_CODE
