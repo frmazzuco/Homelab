@@ -30,15 +30,34 @@ services:
     environment:
       - DUCKDB_PATH=/data/datalake.duckdb
       - API_PORT=8089
-      # Ingest secrets (via .env)
+    networks:
+      - datalake
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.scheduler
+    container_name: datalake-scheduler
+    restart: unless-stopped
+    volumes:
+      - ${DATALAKE_PATH:-/Users/franciscomazzucofilho/datalake}:/data
+      - ./scripts:/app/scripts:ro
+    environment:
+      - DUCKDB_PATH=/data/datalake.duckdb
+      # Apprise
+      - APPRISE_URL=http://apprise-api:8000
+      - APPRISE_NOTIFY_URLS=${APPRISE_NOTIFY_URLS:-}
+      - NOTIFY_ON_SUCCESS=${NOTIFY_ON_SUCCESS:-false}
+      # Ingest secrets
       - PLUGGY_CLIENT_ID=${PLUGGY_CLIENT_ID:-}
       - PLUGGY_CLIENT_SECRET=${PLUGGY_CLIENT_SECRET:-}
       - JELLYFIN_API_KEY=${JELLYFIN_API_KEY:-}
       - JELLYFIN_URL=${JELLYFIN_URL:-http://host.lima.internal:8096}
       - GWM_EMAIL=${GWM_EMAIL:-}
-      - GWM_PASSWORD_MD5=${GWM_PASSWORD_MD5:-}
+      - GWM_PASSWORD=${GWM_PASSWORD:-}
     networks:
       - datalake
+      - default
 
 volumes:
   grafana-data:
@@ -46,3 +65,6 @@ volumes:
 networks:
   datalake:
     name: datalake
+  default:
+    name: bridge
+    external: true

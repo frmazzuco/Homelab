@@ -1,0 +1,21 @@
+FROM python:3.11-slim
+
+# Install supercronic (cron for containers) + curl for Apprise notifications
+ARG TARGETARCH
+RUN apt-get update && apt-get install -y --no-install-recommends curl && \
+    SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v0.2.33/supercronic-linux-${TARGETARCH}" && \
+    curl -fsSL "$SUPERCRONIC_URL" -o /usr/local/bin/supercronic && \
+    chmod +x /usr/local/bin/supercronic && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Python deps
+RUN pip install --no-cache-dir duckdb requests
+
+WORKDIR /app
+
+COPY crontab /app/crontab
+COPY run-job.sh /app/run-job.sh
+RUN chmod +x /app/run-job.sh
+
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["/usr/local/bin/supercronic /app/crontab"]
