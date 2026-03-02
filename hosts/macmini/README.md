@@ -17,6 +17,7 @@ Conteudo especifico do host local do homelab.
 - Para baseline operacional do host, ver:
   - `docs/runbooks/macmini-baseline-checklist.md`
 
-- Estado validado (2026-02-23):
+- Estado validado (2026-03-01):
   - Colima `default`: `8 CPU`, `12GiB`, `40GiB`, runtime `containerd`.
   - Stack midia+monitoramento ativa (Jellyfin/ARR/Jellyseerr/Lingarr/Apprise/Uptime/Beszel/Homepage/CloudBeaver).
+  - Stack home automation ativa (Home Assistant/Mosquitto/gwm-mqtt-connector). Ver `services/homeautomation/`.

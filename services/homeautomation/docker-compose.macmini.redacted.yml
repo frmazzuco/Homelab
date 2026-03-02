@@ -1,0 +1,44 @@
+networks:
+  ha-net:
+    name: ha-net
+
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    environment:
+      TZ: America/Sao_Paulo
+    volumes:
+      - ${HA_CONFIG_DIR:-~/homeassistant/config}:/config
+    network_mode: host
+    restart: unless-stopped
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    volumes:
+      - ${MOSQUITTO_CONFIG_DIR:-~/mosquitto/config}:/mosquitto/config
+      - ${MOSQUITTO_DATA_DIR:-~/mosquitto/data}:/mosquitto/data
+      - ${MOSQUITTO_LOG_DIR:-~/mosquitto/log}:/mosquitto/log
+    ports:
+      - "1883:1883"
+    restart: unless-stopped
+
+  gwm-connector:
+    image: gwm-mqtt-connector:patched
+    container_name: gwm-connector
+    environment:
+      USERNAME: ${GWM_USERNAME}
+      PASSWORD: ${GWM_PASSWORD}
+      VIN: ${GWM_VIN}
+      PIN: ${GWM_PIN}
+      MQTT_HOST: ${GWM_MQTT_HOST:-mqtt://mosquitto:1883}
+      MQTT_USER: ${GWM_MQTT_USER:-}
+      MQTT_PASS: ${GWM_MQTT_PASS:-}
+      REFRESH_TIME: ${GWM_REFRESH_TIME:-10}
+      DEVICE_TRACKER_ENABLED: ${GWM_DEVICE_TRACKER_ENABLED:-true}
+    volumes:
+      - ${GWM_CERTS_DIR:-~/hassio-haval-h6-to-mqtt/haval-h6-mqtt/certs}:/app/certs
+    depends_on:
+      - mosquitto
+    restart: unless-stopped
