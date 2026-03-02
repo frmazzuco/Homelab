@@ -1,0 +1,48 @@
+services:
+  grafana:
+    image: grafana/grafana:12.4.0
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_INSTALL_PLUGINS=yesoreyeram-infinity-datasource
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./provisioning:/etc/grafana/provisioning
+    networks:
+      - datalake
+
+  duckdb-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.duckdb-api
+    container_name: duckdb-api
+    restart: unless-stopped
+    ports:
+      - "8089:8089"
+    volumes:
+      - ${DATALAKE_PATH:-/Users/franciscomazzucofilho/datalake}:/data
+      - ./scripts:/app/scripts:ro
+    environment:
+      - DUCKDB_PATH=/data/datalake.duckdb
+      - API_PORT=8089
+      # Ingest secrets (via .env)
+      - PLUGGY_CLIENT_ID=${PLUGGY_CLIENT_ID:-}
+      - PLUGGY_CLIENT_SECRET=${PLUGGY_CLIENT_SECRET:-}
+      - JELLYFIN_API_KEY=${JELLYFIN_API_KEY:-}
+      - JELLYFIN_URL=${JELLYFIN_URL:-http://host.lima.internal:8096}
+      - GWM_EMAIL=${GWM_EMAIL:-}
+      - GWM_PASSWORD_MD5=${GWM_PASSWORD_MD5:-}
+    networks:
+      - datalake
+
+volumes:
+  grafana-data:
+
+networks:
+  datalake:
+    name: datalake

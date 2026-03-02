@@ -10,8 +10,9 @@ from urllib.parse import parse_qs, urlparse
 from decimal import Decimal
 import duckdb
 
-DB_PATH = "/Users/franciscomazzucofilho/datalake/datalake.duckdb"
-PORT = 8089
+import os
+DB_PATH = os.environ.get("DUCKDB_PATH", "/Users/franciscomazzucofilho/datalake/datalake.duckdb")
+PORT = int(os.environ.get("API_PORT", "8089"))
 
 
 class DecimalEncoder(json.JSONEncoder):

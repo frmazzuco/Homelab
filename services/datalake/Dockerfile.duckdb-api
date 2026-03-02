@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir duckdb requests
+
+COPY scripts/ /app/scripts/
+
+EXPOSE 8089
+
+CMD ["python3", "/app/scripts/duckdb-api.py"]

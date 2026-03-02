@@ -1,0 +1,12 @@
+apiVersion: 1
+
+datasources:
+  - name: DuckDB (Data Lake)
+    type: yesoreyeram-infinity-datasource
+    uid: cfer8evtoz4zkc
+    access: proxy
+    url: http://duckdb-api:8089
+    isDefault: false
+    editable: true
+    jsonData:
+      datasource_mode: basic
