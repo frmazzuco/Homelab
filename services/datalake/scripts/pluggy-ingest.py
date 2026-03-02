@@ -14,8 +14,8 @@ import urllib.error
 
 # Configuração
 WORKSPACE = "/home/node/.openclaw/workspace"
-CONFIG_PATH = f"{WORKSPACE}/nubank-config.json"
-DB_PATH = f"{WORKSPACE}/skills/personal-datalake/datalake.duckdb"
+CONFIG_PATH = os.environ.get("PLUGGY_CONFIG_PATH", f"{WORKSPACE}/nubank-config.json")
+DB_PATH = os.environ.get("DUCKDB_PATH", f"{WORKSPACE}/skills/personal-datalake/datalake.duckdb")
 DUCKDB_CLI = "/tmp/duckdb"
 
 # Carregar config

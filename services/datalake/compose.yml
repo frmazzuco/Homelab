@@ -42,12 +42,15 @@ services:
     volumes:
       - ${DATALAKE_PATH:-/Users/franciscomazzucofilho/datalake}:/data
       - ./scripts:/app/scripts:ro
+      - ${GWM_CERTS_PATH:-/Users/franciscomazzucofilho/hassio-haval-h6-to-mqtt/haval-h6-mqtt/certs}:/app/certs:ro
     environment:
       - DUCKDB_PATH=/data/datalake.duckdb
+      - CERTS_DIR=/app/certs
+      - PLUGGY_CONFIG_PATH=/data/nubank-config.json
       # Apprise
       - APPRISE_URL=http://apprise-api:8000
       - APPRISE_NOTIFY_URLS=${APPRISE_NOTIFY_URLS:-}
-      - NOTIFY_ON_SUCCESS=${NOTIFY_ON_SUCCESS:-false}
+      - NOTIFY_ON_SUCCESS=${NOTIFY_ON_SUCCESS:-true}
       # Ingest secrets
       - PLUGGY_CLIENT_ID=${PLUGGY_CLIENT_ID:-}
       - PLUGGY_CLIENT_SECRET=${PLUGGY_CLIENT_SECRET:-}

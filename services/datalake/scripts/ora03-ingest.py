@@ -31,8 +31,8 @@ except ImportError:
 EMAIL = "chicomazfilho@gmail.com"
 PASSWORD = "Chicom123"
 VIN = "LGWEEUA57TK607201"
-CERTS_DIR = "/home/node/.openclaw/workspace/repos/hassio-haval-h6-to-mqtt/haval-h6-mqtt/certs"
-DB_PATH = "/home/node/.openclaw/workspace/skills/personal-datalake/datalake.duckdb"
+CERTS_DIR = os.environ.get("CERTS_DIR", "/home/node/.openclaw/workspace/repos/hassio-haval-h6-to-mqtt/haval-h6-mqtt/certs")
+DB_PATH = os.environ.get("DUCKDB_PATH", "/home/node/.openclaw/workspace/skills/personal-datalake/datalake.duckdb")
 
 # Endpoints
 LOGIN_HOST = "br-front-service.gwmcloud.com"
