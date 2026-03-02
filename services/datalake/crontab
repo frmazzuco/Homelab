@@ -7,3 +7,6 @@
 
 # Jellyfin: 09:00 BRT = 12:00 UTC
 0 12 * * *  /app/run-job.sh jellyfin "python3 /app/scripts/jellyfin-ingest.py"
+
+# Smart Morning Briefing: 07:00 BRT = 10:00 UTC
+0 10 * * *  /app/run-job.sh briefing "python3 /app/scripts/smart-morning-briefing.py"
