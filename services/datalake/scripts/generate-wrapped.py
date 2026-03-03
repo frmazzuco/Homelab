@@ -158,6 +158,27 @@ def generate():
     
     ent_count = len(ent) if isinstance(ent, list) else 0
     
+    # EV cost estimate
+    print("   Calculando custo EV...")
+    EV_EFFICIENCY = 6.3   # km/kWh (InsideEVs test ORA 03 GT)
+    TARIFA_KWH = 0.80     # R$/kWh CELESC SC residencial
+    GAS_PRICE = 6.20      # R$/L gasolina SC
+    GAS_EFFICIENCY = 12.0 # km/L carro comparável
+
+    ev_cost = None
+    gas_equiv = None
+    ev_saving = None
+    kwh_used = None
+    if float(km) > 0:
+        kwh_used = round(float(km) / EV_EFFICIENCY, 1)
+        ev_cost_val = round(float(km) / EV_EFFICIENCY * TARIFA_KWH, 2)
+        gas_equiv_val = round(float(km) / GAS_EFFICIENCY * GAS_PRICE, 2)
+        ev_saving_val = round(gas_equiv_val - ev_cost_val, 2)
+        ev_cost = fmt_number(ev_cost_val)
+        gas_equiv = fmt_number(gas_equiv_val)
+        ev_saving = fmt_number(ev_saving_val)
+        kwh_used = fmt_number(kwh_used)
+
     # Extra finance stats
     print("   Buscando extras...")
     avg_day_result = query_duckdb(f"""
@@ -279,6 +300,10 @@ def generate():
         top_expenses=expenses_data,
         entertainment=ent_data,
         fun_fact=fun_fact,
+        ev_cost=ev_cost,
+        gas_equiv=gas_equiv,
+        ev_saving=ev_saving,
+        kwh_used=kwh_used,
         monthly_avg_day=monthly_avg_day,
         top_day_spending=top_day_spending,
         total_transactions=total_transactions,

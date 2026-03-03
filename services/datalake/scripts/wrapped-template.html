@@ -255,6 +255,48 @@
     line-height: 1.4;
   }
 
+  /* ── EV Cost ── */
+  .cost-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .cost-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: #faf8f4;
+    border-radius: 10px;
+  }
+  .cost-icon {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 8px;
+    letter-spacing: 1px;
+  }
+  .cost-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .cost-sub {
+    font-size: 11px;
+    color: #999;
+  }
+  .saving-banner {
+    text-align: center;
+    padding: 10px;
+    background: #22C55E10;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #555;
+  }
+  .saving-banner strong { color: #22C55E; }
+
   /* ── Month summary banner ── */
   .month-summary {
     background: #fff;
@@ -450,6 +492,30 @@
       <div class="cat-bar"><div class="cat-bar-fill" style="width: {{ cat.pct }}%"></div></div>
     </div>
     {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- EV Cost -->
+  {% if ev_cost %}
+  <div class="card">
+    <div class="card-title">Custo estimado ORA 03</div>
+    <div class="cost-grid">
+      <div class="cost-item">
+        <div class="cost-icon" style="background: #22C55E20; color: #22C55E;">EV</div>
+        <div class="cost-detail">
+          <div class="cost-val" style="color: #22C55E;">R$ {{ ev_cost }}</div>
+          <div class="cost-sub">{{ kwh_used }} kWh · R$ 0,13/km</div>
+        </div>
+      </div>
+      <div class="cost-item">
+        <div class="cost-icon" style="background: #EF444420; color: #EF4444;">GAS</div>
+        <div class="cost-detail">
+          <div class="cost-val" style="color: #EF4444;">R$ {{ gas_equiv }}</div>
+          <div class="cost-sub">gasolina equivalente · R$ 0,52/km</div>
+        </div>
+      </div>
+    </div>
+    <div class="saving-banner">Economia de <strong>R$ {{ ev_saving }}</strong> vs gasolina</div>
   </div>
   {% endif %}
 

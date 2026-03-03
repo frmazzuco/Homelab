@@ -1,0 +1,1043 @@
+{
+  "panels": [
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 20
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none"
+      },
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "SOC",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"SELECT battery_soc as value FROM ora03_current\"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udd0b Bateria",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "unit": "km"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "id": 2,
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "km",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"SELECT battery_range_km as value FROM ora03_current\"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udee3\ufe0f Autonomia",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "purple",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "unit": "km"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 3,
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "km",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"SELECT odometer_km as value FROM ora03_current\"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83c\udfc1 Od\u00f4metro",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "text": "\ud83d\udd13 Destravado"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "text": "\ud83d\udd12 Travado"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "Lock",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"SELECT CASE WHEN is_locked THEN 1 ELSE 0 END as value FROM ora03_current\"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udd12 Status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "#808080",
+                  "text": "\u23f8\ufe0f N\u00e3o"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "text": "\u26a1 Sim"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#808080",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background"
+      },
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "Chrg",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"SELECT CASE WHEN is_charging THEN 1 ELSE 0 END as value FROM ora03_current\"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\u26a1 Carregando",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center"
+          }
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": false
+      },
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "Loc",
+              "type": "string"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"SELECT ROUND(latitude, 4) || ', ' || ROUND(longitude, 4) as Loc FROM ora03_current\"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udccd Localiza\u00e7\u00e3o",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "mode": "basic",
+              "type": "gauge"
+            }
+          },
+          "decimals": 0,
+          "max": 280,
+          "min": 180,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 200
+              },
+              {
+                "color": "green",
+                "value": 220
+              },
+              {
+                "color": "orange",
+                "value": 250
+              },
+              {
+                "color": "red",
+                "value": 270
+              }
+            ]
+          },
+          "unit": "presskpa"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 7,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "format": "table",
+          "refId": "A",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"\\n                SELECT \\n                    tire_fl_pressure as \\\"\\ud83d\\udd35 DE\\\",\\n                    tire_fr_pressure as \\\"\\ud83d\\udd34 DD\\\", \\n                    tire_rl_pressure as \\\"\\ud83d\\udd35 TE\\\",\\n                    tire_rr_pressure as \\\"\\ud83d\\udd34 TD\\\",\\n                    ROUND((tire_fl_pressure + tire_fr_pressure + tire_rl_pressure + tire_rr_pressure) / 4, 0) as \\\"\\u2298 M\\u00e9dia\\\"\\n                FROM ora03_current\\n            \"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udede Press\u00e3o dos Pneus (kPa)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SOC (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Autonomia (km)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 8,
+      "options": {
+        "barWidth": 0.6,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "table",
+          "refId": "A",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"\\n                SELECT \\n                    CAST(timestamp AS VARCHAR)[:16] as Hora,\\n                    battery_soc as \\\"SOC (%)\\\",\\n                    battery_range_km as \\\"Autonomia (km)\\\"\\n                FROM ora03_snapshots \\n                WHERE timestamp >= '${__from:date:YYYY-MM-DD}'\\n                AND timestamp <= '${__to:date:YYYY-MM-DD}T23:59:59'\\n                ORDER BY timestamp\\n            \"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udd0b Hist\u00f3rico de Bateria",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "cellOptions": {
+              "type": "color-background"
+            }
+          },
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 20
+              },
+              {
+                "color": "orange",
+                "value": 35
+              },
+              {
+                "color": "red",
+                "value": 45
+              }
+            ]
+          },
+          "unit": "celsius"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 13
+      },
+      "id": 9,
+      "options": {
+        "footer": {
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "format": "table",
+          "refId": "A",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"\\n                        SELECT \\n                            tire_fl_temp as \\\"DE (\\u00b0C)\\\", tire_fr_temp as \\\"DD (\\u00b0C)\\\",\\n                            tire_rl_temp as \\\"TE (\\u00b0C)\\\", tire_rr_temp as \\\"TD (\\u00b0C)\\\"\\n                        FROM ora03_current\\n                    \"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83c\udf21\ufe0f Temperatura dos Pneus",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SOC %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 20
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 50
+                    },
+                    {
+                      "color": "green",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 10,
+      "options": {
+        "footer": {
+          "countRows": true,
+          "fields": "",
+          "reducer": [
+            "count"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Data/Hora"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "format": "table",
+          "refId": "A",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "data": "{\"query\": \"\\n                        SELECT \\n                            CAST(timestamp AS VARCHAR)[:16] as \\\"Data/Hora\\\",\\n                            battery_soc as \\\"SOC %\\\",\\n                            battery_range_km as \\\"Autonomia km\\\",\\n                            odometer_km as \\\"Od\\u00f4metro km\\\",\\n                            tire_fl_pressure as \\\"DE\\\", tire_fr_pressure as \\\"DD\\\",\\n                            tire_rl_pressure as \\\"TE\\\", tire_rr_pressure as \\\"TD\\\",\\n                            CASE WHEN is_locked THEN '\\ud83d\\udd12' ELSE '\\ud83d\\udd13' END as Trava,\\n                            CASE WHEN is_charging THEN '\\u26a1' ELSE '\\u2014' END as Carga,\\n                            ROUND(latitude, 4) || ', ' || ROUND(longitude, 4) as Local\\n                        FROM ora03_snapshots\\n                        WHERE timestamp >= '${__from:date:YYYY-MM-DD}'\\n                        AND timestamp <= '${__to:date:YYYY-MM-DD}T23:59:59'\\n                        ORDER BY timestamp DESC\\n                    \"}",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udcca Todos os Snapshots",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "uid": "cfer8evtoz4zkc"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 16,
+        "x": 8,
+        "y": 13
+      },
+      "id": 11,
+      "options": {
+        "content": "### \ud83d\ude97 ORA 03 SKIN BEV48 \u2014 Hamilton White\n**VIN:** `LGWEEUA57TK607201`\n\nDados coletados via GWM Brasil API a cada 6h. Press\u00e3o ideal dos pneus: **230-240 kPa**.\n\nO hist\u00f3rico de bateria e od\u00f4metro vai se enriquecendo com o tempo \u2014 quanto mais snapshots, mais insights sobre padr\u00f5es de uso e carga.",
+        "mode": "markdown"
+      },
+      "title": "",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 12,
+      "title": "\ud83d\udcb0 Custo Estimado de Energia",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#22C55E",
+            "mode": "fixed"
+          },
+          "unit": "currencyBRL"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 30
+      },
+      "id": 13,
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "custo",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT ROUND((MAX(odometer_km) - MIN(odometer_km)) / 6.3 * 0.80, 2) as custo FROM ora03_snapshots WHERE odometer_km > 0 AND date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}'\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\u26a1 Custo Energia (m\u00eas)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#3B82F6",
+            "mode": "fixed"
+          },
+          "unit": "currencyBRL"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 30
+      },
+      "id": 14,
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "economia",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT ROUND((MAX(odometer_km) - MIN(odometer_km)) / 12.0 * 6.20 - (MAX(odometer_km) - MIN(odometer_km)) / 6.3 * 0.80, 2) as economia FROM ora03_snapshots WHERE odometer_km > 0 AND date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}'\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udd25 Economia vs Gasolina",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#F59E0B",
+            "mode": "fixed"
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 30
+      },
+      "id": 15,
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "kwh",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT ROUND((MAX(odometer_km) - MIN(odometer_km)) / 6.3, 1) as kwh FROM ora03_snapshots WHERE odometer_km > 0 AND date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}'\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udd0b kWh Consumidos",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyBRL"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "EV R$/km"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#22C55E",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gasolina R$/km"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#EF4444",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 30
+      },
+      "id": 16,
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "EV R$/km",
+              "type": "number"
+            },
+            {
+              "selector": "[1]",
+              "text": "Gasolina R$/km",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT ROUND(0.80 / 6.3, 2) as ev, ROUND(6.20 / 12.0, 2) as gasolina FROM ora03_snapshots LIMIT 1\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udcca Custo por Km",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "EV"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#22C55E",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gasolina"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#EF4444",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 29
+      },
+      "id": 17,
+      "options": {},
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT month as mes, custo_energia_rs as EV, custo_gasolina_equiv as Gasolina FROM ora03_cost_estimate ORDER BY month\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\u26fd vs \u26a1 Custo Mensal Estimado",
+      "type": "barchart"
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 34
+      },
+      "id": 18,
+      "options": {
+        "content": "### Premissas\n| Par\u00e2metro | Valor |\n|---|---|\n| Efici\u00eancia ORA 03 | **6,3 km/kWh** (teste InsideEVs 100\u21925%) |\n| Tarifa CELESC SC | **R$ 0,80/kWh** (residencial c/ ICMS) |\n| Gasolina SC | **R$ 6,20/L** (m\u00e9dia) |\n| Carro compar\u00e1vel | **12 km/L** (cidade) |\n| **Custo EV** | **R$ 0,13/km** |\n| **Custo Gasolina** | **R$ 0,52/km** |\n| **Economia** | **~75%** |",
+        "mode": "markdown"
+      },
+      "title": "",
+      "type": "text"
+    }
+  ],
+  "tags": [
+    "ora03",
+    "datalake",
+    "ev"
+  ],
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "\ud83d\ude97 ORA 03 - Data Lake",
+  "uid": "96529448-4742-417c-a2fa-8b697d88808d"
+}
