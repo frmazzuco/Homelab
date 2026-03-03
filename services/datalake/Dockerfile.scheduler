@@ -2,17 +2,19 @@ FROM python:3.11-slim
 
 ARG TARGETARCH
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl unzip && \
-    curl -fsSL "https://github.com/aptible/supercronic/releases/download/v0.2.33/supercronic-linux-${TARGETARCH}" \
-      -o /usr/local/bin/supercronic && chmod +x /usr/local/bin/supercronic && \
-    curl -fsSL "https://github.com/duckdb/duckdb/releases/download/v1.2.2/duckdb_cli-linux-aarch64.zip" \
-      -o /tmp/duckdb.zip && \
-    python3 -c "import zipfile; zipfile.ZipFile('/tmp/duckdb.zip').extractall('/usr/local/bin/')" && \
-    chmod +x /usr/local/bin/duckdb && ln -sf /usr/local/bin/duckdb /tmp/duckdb && \
-    rm /tmp/duckdb.zip && \
-    apt-get purge -y unzip && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl unzip libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir duckdb requests
+RUN curl -fsSL "https://github.com/aptible/supercronic/releases/download/v0.2.33/supercronic-linux-${TARGETARCH}" \
+      -o /usr/local/bin/supercronic && chmod +x /usr/local/bin/supercronic
+
+RUN curl -fsSL "https://github.com/duckdb/duckdb/releases/download/v1.2.2/duckdb_cli-linux-aarch64.zip" \
+      -o /tmp/duckdb.zip && unzip -o /tmp/duckdb.zip -d /usr/local/bin/ \
+      && chmod +x /usr/local/bin/duckdb && ln -sf /usr/local/bin/duckdb /tmp/duckdb \
+      && rm /tmp/duckdb.zip
+
+RUN pip install --no-cache-dir duckdb requests jinja2 weasyprint
 
 WORKDIR /app
 

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0a;
+    color: #ffffff;
+    width: 800px;
+    padding: 0;
+  }
+
+  .page {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    padding: 48px;
+    min-height: 1120px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .header .emoji { font-size: 48px; margin-bottom: 8px; }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 16px;
+    color: #888;
+    font-weight: 400;
+  }
+  .header .period {
+    font-size: 20px;
+    font-weight: 700;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .stat-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .stat-card .value {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .stat-card .label {
+    font-size: 13px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .stat-card.blue .value { color: #36A2EB; }
+  .stat-card.pink .value { color: #FF6384; }
+  .stat-card.orange .value { color: #FF9F40; }
+  .stat-card.teal .value { color: #4BC0C0; }
+  .stat-card.purple .value { color: #9966FF; }
+  .stat-card.green .value { color: #4CAF50; }
+
+  .section {
+    margin-bottom: 28px;
+  }
+
+  .section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .locations-list {
+    list-style: none;
+  }
+
+  .locations-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .locations-list .place { color: #ddd; flex: 1; }
+  .locations-list .visits {
+    color: #FF6384;
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 16px;
+  }
+
+  .top-expenses {
+    list-style: none;
+  }
+
+  .top-expenses li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .top-expenses .desc { color: #ddd; flex: 1; }
+  .top-expenses .amount {
+    color: #FF9F40;
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 16px;
+  }
+  .top-expenses .category {
+    color: #666;
+    font-size: 12px;
+    margin-left: 12px;
+    min-width: 80px;
+    text-align: right;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .cat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .cat-item .name { color: #ddd; }
+  .cat-item .val { color: #FF9F40; font-weight: 600; }
+
+  .entertainment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .ent-item {
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .ent-item .title { color: #ddd; font-weight: 600; }
+  .ent-item .meta { color: #666; font-size: 12px; margin-top: 2px; }
+
+  .fun-fact {
+    background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
+    border: 1px solid rgba(102,126,234,0.3);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  .fun-fact .emoji { font-size: 32px; margin-bottom: 8px; }
+  .fun-fact .text { font-size: 16px; color: #ccc; line-height: 1.5; }
+  .fun-fact .text strong { color: #667eea; }
+
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    color: #444;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="emoji">📊</div>
+    <h1>Personal Wrapped</h1>
+    <div class="subtitle">{{ user_name }}</div>
+    <div class="period">{{ period }}</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="icon">🚗</div>
+      <div class="value">{{ km_rodados }}</div>
+      <div class="label">Km Rodados</div>
+    </div>
+    <div class="stat-card pink">
+      <div class="icon">📍</div>
+      <div class="value">{{ locais_visitados }}</div>
+      <div class="label">Locais Visitados</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="icon">💰</div>
+      <div class="value">R$ {{ total_gastos }}</div>
+      <div class="label">Total Gastos</div>
+    </div>
+    <div class="stat-card teal">
+      <div class="icon">🎬</div>
+      <div class="value">{{ itens_assistidos }}</div>
+      <div class="label">Títulos Assistidos</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="icon">🔋</div>
+      <div class="value">{{ bateria_media }}%</div>
+      <div class="label">Bateria Média</div>
+    </div>
+    <div class="stat-card green">
+      <div class="icon">⚡</div>
+      <div class="value">{{ autonomia_media }} km</div>
+      <div class="label">Autonomia Média</div>
+    </div>
+  </div>
+
+  {% if top_locations %}
+  <div class="section">
+    <h2>📍 Lugares Mais Visitados</h2>
+    <ul class="locations-list">
+      {% for loc in top_locations %}
+      <li>
+        <span class="place">{{ loc.name }}</span>
+        <span class="visits">{{ loc.visits }}x</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if top_categories %}
+  <div class="section">
+    <h2>🏷️ Gastos por Categoria</h2>
+    <div class="categories-grid">
+      {% for cat in top_categories %}
+      <div class="cat-item">
+        <span class="name">{{ cat.name }}</span>
+        <span class="val">R$ {{ cat.amount }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if top_expenses %}
+  <div class="section">
+    <h2>🔥 Maiores Gastos</h2>
+    <ul class="top-expenses">
+      {% for exp in top_expenses %}
+      <li>
+        <span class="desc">{{ exp.desc }}</span>
+        <span class="category">{{ exp.category }}</span>
+        <span class="amount">R$ {{ exp.amount }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if entertainment %}
+  <div class="section">
+    <h2>🎬 Assistidos</h2>
+    <div class="entertainment-grid">
+      {% for item in entertainment %}
+      <div class="ent-item">
+        <div class="title">{{ item.title }}</div>
+        <div class="meta">{{ item.user }} · {{ item.device }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if fun_fact %}
+  <div class="fun-fact">
+    <div class="emoji">💡</div>
+    <div class="text">{{ fun_fact }}</div>
+  </div>
+  {% endif %}
+
+  <div class="footer">
+    Gerado por Molt 🐍 · {{ generated_at }}
+  </div>
+</div>
+</body>
+</html>

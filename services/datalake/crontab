@@ -3,7 +3,7 @@
 # Nubank: 06:00 BRT = 09:00 UTC
 0 9 * * *  PLUGGY_CONFIG_PATH=/data/nubank-config.json /app/run-job.sh nubank "python3 /app/scripts/pluggy-ingest.py"
 
-# ORA 03: cada 2h (localização + bateria) — silencioso, só notifica falha
+# ORA 03: cada 2h (localização + bateria) — silencioso
 0 */2 * * *  NOTIFY_ON_SUCCESS=false /app/run-job.sh ora03 "python3 /app/scripts/ora03-ingest.py"
 
 # Jellyfin: 09:00 BRT = 12:00 UTC
@@ -11,3 +11,6 @@
 
 # Smart Morning Briefing: 07:00 BRT = 10:00 UTC
 0 10 * * *  /app/run-job.sh briefing "python3 /app/scripts/smart-morning-briefing.py"
+
+# Personal Wrapped: dia 1, 08:00 BRT = 11:00 UTC (gera mês anterior)
+0 11 1 * *  /app/run-job.sh wrapped "python3 /app/scripts/generate-wrapped.py"
