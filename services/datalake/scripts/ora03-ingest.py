@@ -140,10 +140,24 @@ def ingest_snapshot(data):
     
     battery_soc = parse_sensor(items, "2013021")          # %
     battery_range = parse_sensor(items, "2011501")        # km
-    odometer = parse_sensor(items, "2042082")             # km
+    odometer_raw = parse_sensor(items, "2103010")  # totalDistance (km)
+    if odometer_raw is None or odometer_raw == 0:
+        odometer_raw = parse_sensor(items, "2042082")  # fallback
+    odometer = odometer_raw
     is_locked = parse_bool_sensor(items, "2310001", "1")
     is_charging = parse_bool_sensor(items, "2013023", "5")
     is_ac_on = parse_bool_sensor(items, "2078020", "1")
+    
+    # Pneus (pressão kPa e temperatura °C)
+    tire_fl_pressure = parse_sensor(items, "2101001")  # Front Left
+    tire_fr_pressure = parse_sensor(items, "2101002")  # Front Right
+    tire_rl_pressure = parse_sensor(items, "2101003")  # Rear Left
+    tire_rr_pressure = parse_sensor(items, "2101004")  # Rear Right
+    tire_fl_temp = parse_sensor(items, "2101005")
+    tire_fr_temp = parse_sensor(items, "2101006")
+    tire_rl_temp = parse_sensor(items, "2101007")
+    tire_rr_temp = parse_sensor(items, "2101008")
+    charging_time = parse_sensor(items, "2013022")  # min
     
     # Localização - vem no top-level do response
     latitude = data.get("latitude")
@@ -171,12 +185,18 @@ def ingest_snapshot(data):
             battery_soc, battery_range_km, odometer_km,
             latitude, longitude, address,
             is_locked, is_charging, is_ac_on,
+            tire_fl_pressure, tire_fr_pressure, tire_rl_pressure, tire_rr_pressure,
+            tire_fl_temp, tire_fr_temp, tire_rl_temp, tire_rr_temp,
+            charging_time_min,
             raw_json
         ) VALUES (
             '{timestamp}', '{date}',
             {sql_val(battery_soc)}, {sql_val(battery_range)}, {sql_val(odometer)},
             {sql_val(latitude)}, {sql_val(longitude)}, {sql_val(address)},
             {sql_val(is_locked)}, {sql_val(is_charging)}, {sql_val(is_ac_on)},
+            {sql_val(tire_fl_pressure)}, {sql_val(tire_fr_pressure)}, {sql_val(tire_rl_pressure)}, {sql_val(tire_rr_pressure)},
+            {sql_val(tire_fl_temp)}, {sql_val(tire_fr_temp)}, {sql_val(tire_rl_temp)}, {sql_val(tire_rr_temp)},
+            {sql_val(charging_time)},
             {sql_val(json.dumps(data))}
         );
         """
@@ -196,13 +216,19 @@ def ingest_snapshot(data):
                 battery_soc, battery_range_km, odometer_km,
                 latitude, longitude, address,
                 is_locked, is_charging, is_ac_on,
+                tire_fl_pressure, tire_fr_pressure, tire_rl_pressure, tire_rr_pressure,
+                tire_fl_temp, tire_fr_temp, tire_rl_temp, tire_rr_temp,
+                charging_time_min,
                 raw_json
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, [
             timestamp, date,
             battery_soc, battery_range, odometer,
             latitude, longitude, address,
             is_locked, is_charging, is_ac_on,
+            tire_fl_pressure, tire_fr_pressure, tire_rl_pressure, tire_rr_pressure,
+            tire_fl_temp, tire_fr_temp, tire_rl_temp, tire_rr_temp,
+            charging_time,
             json.dumps(data)
         ])
         conn.commit()
