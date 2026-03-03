@@ -158,6 +158,52 @@ def generate():
     
     ent_count = len(ent) if isinstance(ent, list) else 0
     
+    # Extra finance stats
+    print("   Buscando extras...")
+    avg_day_result = query_duckdb(f"""
+        SELECT ROUND(SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) / 
+               COUNT(DISTINCT date), 2) as avg_day
+        FROM nubank_transactions
+        WHERE date >= '{start}' AND date < '{end}'
+    """)
+    monthly_avg_day = None
+    if avg_day_result and isinstance(avg_day_result, list) and avg_day_result:
+        v = avg_day_result[0].get("avg_day")
+        if v and float(v) > 0:
+            monthly_avg_day = fmt_number(v)
+    
+    top_day_result = query_duckdb(f"""
+        SELECT date, ROUND(SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END), 2) as total
+        FROM nubank_transactions
+        WHERE date >= '{start}' AND date < '{end}'
+        GROUP BY date ORDER BY total DESC LIMIT 1
+    """)
+    top_day_spending = None
+    if top_day_result and isinstance(top_day_result, list) and top_day_result:
+        d = top_day_result[0]
+        if d.get("total") and float(d["total"]) > 0:
+            raw_date = str(d.get("date", ""))[:10]
+            try:
+                dt = datetime.strptime(raw_date, "%Y-%m-%d")
+                formatted_date = dt.strftime("%d/%m")
+            except:
+                formatted_date = raw_date
+            top_day_spending = {"amount": fmt_number(d["total"]), "date": formatted_date}
+    
+    tx_count_result = query_duckdb(f"""
+        SELECT COUNT(*) as n FROM nubank_transactions
+        WHERE amount > 0 AND date >= '{start}' AND date < '{end}'
+    """)
+    total_transactions = None
+    if tx_count_result and isinstance(tx_count_result, list) and tx_count_result:
+        n = tx_count_result[0].get("n", 0)
+        if n and int(n) > 0:
+            total_transactions = int(n)
+
+    snapshots_count = 0
+    if stats and isinstance(stats, list) and stats:
+        snapshots_count = stats[0].get("snapshots", 0) or 0
+
     # === Generate fun fact ===
     fun_facts = []
     if float(total_gastos) > 0 and categories and isinstance(categories, list):
@@ -190,11 +236,14 @@ def generate():
             })
     
     categories_data = []
-    if isinstance(categories, list):
+    if isinstance(categories, list) and categories:
+        max_cat = max(float(c.get("amount", 0) or 0) for c in categories) or 1
         for cat in categories:
+            amt = float(cat.get("amount", 0) or 0)
             categories_data.append({
                 "name": cat.get("name", "?"),
-                "amount": fmt_number(cat.get("amount", 0))
+                "amount": fmt_number(amt),
+                "pct": round(amt / max_cat * 100)
             })
     
     expenses_data = []
@@ -224,11 +273,15 @@ def generate():
         itens_assistidos=ent_count,
         bateria_media=int(float(avg_bat)),
         autonomia_media=int(float(avg_range)),
+        snapshots=int(snapshots_count),
         top_locations=top_locations_data,
         top_categories=categories_data,
         top_expenses=expenses_data,
         entertainment=ent_data,
         fun_fact=fun_fact,
+        monthly_avg_day=monthly_avg_day,
+        top_day_spending=top_day_spending,
+        total_transactions=total_transactions,
         generated_at=datetime.now().strftime("%d/%m/%Y %H:%M")
     )
     

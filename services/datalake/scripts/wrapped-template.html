@@ -3,294 +3,485 @@
 <head>
 <meta charset="utf-8">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
-  
+  @font-face {
+    font-family: 'Space Grotesk';
+    src: url('file:///data/fonts/SpaceGrotesk-Variable.ttf') format('truetype');
+    font-weight: 100 900;
+  }
+  @font-face {
+    font-family: 'Inter';
+    src: url('file:///data/fonts/Inter-Variable.ttf') format('truetype');
+    font-weight: 100 900;
+  }
+
+  @page { size: A4; margin: 36px 0 0 0; background: #F5F0E8; }
+  @page :first { margin-top: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  
+
   body {
-    font-family: 'Inter', sans-serif;
-    background: #0a0a0a;
-    color: #ffffff;
-    width: 800px;
-    padding: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #F5F0E8;
+    color: #1a1a1a;
+    width: 210mm;
   }
 
   .page {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-    padding: 48px;
-    min-height: 1120px;
+    background: #F5F0E8;
+    padding: 40px 36px;
+    min-height: 297mm;
+    width: 210mm;
   }
 
+  /* ── Header ── */
   .header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 36px;
   }
-
-  .header .emoji { font-size: 48px; margin-bottom: 8px; }
+  .header .badge {
+    display: inline-block;
+    background: #fff;
+    border: 2px solid #1a1a1a;
+    border-radius: 12px;
+    padding: 8px 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+  }
   .header h1 {
-    font-size: 36px;
-    font-weight: 900;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.1;
     margin-bottom: 4px;
   }
-  .header .subtitle {
-    font-size: 16px;
-    color: #888;
-    font-weight: 400;
-  }
-  .header .period {
-    font-size: 20px;
+  .header .year-box {
+    display: inline-block;
+    border: 3px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 2px 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
     font-weight: 700;
-    color: #aaa;
     margin-top: 4px;
   }
+  .header .subtitle {
+    font-size: 14px;
+    color: #777;
+    margin-top: 12px;
+  }
 
+  /* ── Cards ── */
+  .card {
+    background: #ffffff;
+    border: 1.5px solid #e0dcd4;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    break-before: auto;
+    margin-top: 0;
+    padding-top: 28px;
+  }
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 16px;
+  }
+
+  /* ── Stats Grid ── */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
+    gap: 12px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .stat-box {
+    background: #ffffff;
+    border: 1.5px solid #e0dcd4;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .stat-box .value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.1;
+  }
+  .stat-box .label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #999;
+    margin-top: 6px;
+  }
+  .stat-box .unit {
+    font-size: 16px;
+    font-weight: 500;
+    color: #aaa;
   }
 
-  .stat-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 24px;
+  /* Color accents on stat values */
+  .stat-box.accent-blue .value { color: #3B82F6; }
+  .stat-box.accent-rose .value { color: #F43F5E; }
+  .stat-box.accent-amber .value { color: #F59E0B; }
+  .stat-box.accent-teal .value { color: #14B8A6; }
+  .stat-box.accent-violet .value { color: #8B5CF6; }
+  .stat-box.accent-green .value { color: #22C55E; }
+
+  /* ── Lists ── */
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0ede6;
+  }
+  .list-item:last-child { border-bottom: none; }
+  .list-item .rank {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ccc;
+    width: 32px;
     text-align: center;
   }
+  .list-item .text {
+    flex: 1;
+    margin-left: 12px;
+    font-size: 14px;
+    color: #333;
+  }
+  .list-item .text .sub {
+    font-size: 12px;
+    color: #999;
+  }
+  .list-item .badge-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: #f5f0e8;
+  }
+  .badge-amber { color: #D97706; }
+  .badge-rose { color: #E11D48; }
+  .badge-teal { color: #0D9488; }
 
-  .stat-card .icon { font-size: 28px; margin-bottom: 8px; }
-  .stat-card .value {
-    font-size: 32px;
-    font-weight: 900;
+  /* ── Two-col ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* ── Category bars ── */
+  .cat-row {
+    margin-bottom: 10px;
+  }
+  .cat-row .cat-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
     margin-bottom: 4px;
   }
-  .stat-card .label {
-    font-size: 13px;
-    color: #888;
+  .cat-row .cat-name { color: #555; }
+  .cat-row .cat-val { font-weight: 600; color: #D97706; }
+  .cat-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: #f0ede6;
+    overflow: hidden;
+  }
+  .cat-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #F59E0B 0%, #F97316 100%);
+  }
+
+  /* ── Highlights ── */
+  .highlight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .highlight-item {
+    text-align: center;
+    padding: 14px 8px;
+    background: #faf8f4;
+    border-radius: 10px;
+  }
+  .highlight-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .highlight-label {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+  .highlight-val.accent-blue { color: #3B82F6; }
+  .highlight-val.accent-violet { color: #8B5CF6; }
+  .highlight-val.accent-green { color: #22C55E; }
+  .highlight-val.accent-teal { color: #14B8A6; }
+
+  .empty-note {
+    font-size: 12px;
+    color: #aaa;
+    text-align: center;
+    margin-top: 12px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* ── Month summary banner ── */
+  .month-summary {
+    background: #fff;
+    border: 1.5px solid #e0dcd4;
+    border-radius: 16px;
+    padding: 20px 28px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .month-summary .ms-item .ms-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .month-summary .ms-item .ms-label {
+    font-size: 10px;
+    color: #999;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
-  .stat-card.blue .value { color: #36A2EB; }
-  .stat-card.pink .value { color: #FF6384; }
-  .stat-card.orange .value { color: #FF9F40; }
-  .stat-card.teal .value { color: #4BC0C0; }
-  .stat-card.purple .value { color: #9966FF; }
-  .stat-card.green .value { color: #4CAF50; }
-
-  .section {
-    margin-bottom: 28px;
-  }
-
-  .section h2 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-
-  .locations-list {
-    list-style: none;
-  }
-
-  .locations-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 16px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 8px;
-    margin-bottom: 6px;
-    font-size: 14px;
-  }
-
-  .locations-list .place { color: #ddd; flex: 1; }
-  .locations-list .visits {
-    color: #FF6384;
-    font-weight: 700;
-    font-size: 16px;
-    margin-left: 16px;
-  }
-
-  .top-expenses {
-    list-style: none;
-  }
-
-  .top-expenses li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 16px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 8px;
-    margin-bottom: 6px;
-    font-size: 14px;
-  }
-
-  .top-expenses .desc { color: #ddd; flex: 1; }
-  .top-expenses .amount {
-    color: #FF9F40;
-    font-weight: 700;
-    font-size: 16px;
-    margin-left: 16px;
-  }
-  .top-expenses .category {
-    color: #666;
-    font-size: 12px;
-    margin-left: 12px;
-    min-width: 80px;
-    text-align: right;
-  }
-
-  .categories-grid {
+  /* ── Entertainment grid ── */
+  .ent-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
-
-  .cat-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 16px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 8px;
-    font-size: 14px;
-  }
-
-  .cat-item .name { color: #ddd; }
-  .cat-item .val { color: #FF9F40; font-weight: 600; }
-
-  .entertainment-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-
   .ent-item {
-    padding: 10px 16px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 8px;
-    font-size: 14px;
+    padding: 12px;
+    background: #faf8f4;
+    border-radius: 10px;
+  }
+  .ent-item .title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+  }
+  .ent-item .meta {
+    font-size: 11px;
+    color: #999;
+    margin-top: 2px;
   }
 
-  .ent-item .title { color: #ddd; font-weight: 600; }
-  .ent-item .meta { color: #666; font-size: 12px; margin-top: 2px; }
-
+  /* ── Fun Fact ── */
   .fun-fact {
-    background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
-    border: 1px solid rgba(102,126,234,0.3);
+    background: #ffffff;
+    border: 2px dashed #d4cfbf;
     border-radius: 16px;
     padding: 24px;
     text-align: center;
-    margin-top: 32px;
+    margin-bottom: 16px;
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
+  .fun-fact .tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #8B5CF6;
+    margin-bottom: 10px;
+  }
+  .fun-fact .text {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.6;
+  }
+  .fun-fact .text strong { color: #1a1a1a; }
 
-  .fun-fact .emoji { font-size: 32px; margin-bottom: 8px; }
-  .fun-fact .text { font-size: 16px; color: #ccc; line-height: 1.5; }
-  .fun-fact .text strong { color: #667eea; }
-
+  /* ── Footer ── */
   .footer {
     text-align: center;
-    margin-top: 32px;
-    color: #444;
-    font-size: 12px;
+    padding-top: 16px;
+    font-size: 11px;
+    color: #bbb;
+  }
+  .footer strong {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #999;
   }
 </style>
 </head>
 <body>
 <div class="page">
+
+  <!-- Header -->
   <div class="header">
-    <div class="emoji">📊</div>
-    <h1>Personal Wrapped</h1>
-    <div class="subtitle">{{ user_name }}</div>
-    <div class="period">{{ period }}</div>
+    <div class="badge">Personal Wrapped</div>
+    <h1>{{ user_name }}</h1>
+    <div class="year-box">{{ period }}</div>
+    <div class="subtitle">Seu mes em numeros: mobilidade, financas e entretenimento.</div>
   </div>
 
+  <!-- Stats -->
   <div class="stats-grid">
-    <div class="stat-card blue">
-      <div class="icon">🚗</div>
-      <div class="value">{{ km_rodados }}</div>
-      <div class="label">Km Rodados</div>
+    <div class="stat-box accent-blue">
+      <div class="value">{{ km_rodados }} <span class="unit">km</span></div>
+      <div class="label">Rodados</div>
     </div>
-    <div class="stat-card pink">
-      <div class="icon">📍</div>
+    <div class="stat-box accent-rose">
       <div class="value">{{ locais_visitados }}</div>
-      <div class="label">Locais Visitados</div>
+      <div class="label">Locais</div>
     </div>
-    <div class="stat-card orange">
-      <div class="icon">💰</div>
+    <div class="stat-box accent-amber">
       <div class="value">R$ {{ total_gastos }}</div>
-      <div class="label">Total Gastos</div>
+      <div class="label">Gastos</div>
     </div>
-    <div class="stat-card teal">
-      <div class="icon">🎬</div>
+    <div class="stat-box accent-teal">
       <div class="value">{{ itens_assistidos }}</div>
-      <div class="label">Títulos Assistidos</div>
+      <div class="label">Assistidos</div>
     </div>
-    <div class="stat-card purple">
-      <div class="icon">🔋</div>
-      <div class="value">{{ bateria_media }}%</div>
-      <div class="label">Bateria Média</div>
+    <div class="stat-box accent-violet">
+      <div class="value">{{ bateria_media }}<span class="unit">%</span></div>
+      <div class="label">Bateria Media</div>
     </div>
-    <div class="stat-card green">
-      <div class="icon">⚡</div>
-      <div class="value">{{ autonomia_media }} km</div>
-      <div class="label">Autonomia Média</div>
+    <div class="stat-box accent-green">
+      <div class="value">{{ autonomia_media }} <span class="unit">km</span></div>
+      <div class="label">Autonomia</div>
     </div>
   </div>
 
-  {% if top_locations %}
-  <div class="section">
-    <h2>📍 Lugares Mais Visitados</h2>
-    <ul class="locations-list">
+  <div class="two-col">
+    <!-- Locations or vehicle summary -->
+    {% if top_locations %}
+    <div class="card">
+      <div class="card-title">Lugares mais visitados</div>
       {% for loc in top_locations %}
-      <li>
-        <span class="place">{{ loc.name }}</span>
-        <span class="visits">{{ loc.visits }}x</span>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-
-  {% if top_categories %}
-  <div class="section">
-    <h2>🏷️ Gastos por Categoria</h2>
-    <div class="categories-grid">
-      {% for cat in top_categories %}
-      <div class="cat-item">
-        <span class="name">{{ cat.name }}</span>
-        <span class="val">R$ {{ cat.amount }}</span>
+      <div class="list-item">
+        <span class="rank">{{ loop.index }}</span>
+        <span class="text">{{ loc.name }}</span>
+        <span class="badge-val badge-rose">{{ loc.visits }}x</span>
       </div>
       {% endfor %}
     </div>
-  </div>
-  {% endif %}
+    {% else %}
+    <div class="card">
+      <div class="card-title">ORA 03</div>
+      <div class="highlight-grid">
+        <div class="highlight-item">
+          <div class="highlight-val accent-blue">{{ km_rodados }} km</div>
+          <div class="highlight-label">rodados no mes</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-val accent-violet">{{ bateria_media }}%</div>
+          <div class="highlight-label">bateria media</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-val accent-green">{{ autonomia_media }} km</div>
+          <div class="highlight-label">autonomia media</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-val accent-teal">{{ snapshots }}</div>
+          <div class="highlight-label">coletas realizadas</div>
+        </div>
+      </div>
+      {% if not km_rodados or km_rodados == '0' %}
+      <div class="empty-note">Rastreamento de localizacao iniciou em marco/2026. Proximo mes tera dados completos!</div>
+      {% endif %}
+    </div>
+    {% endif %}
 
-  {% if top_expenses %}
-  <div class="section">
-    <h2>🔥 Maiores Gastos</h2>
-    <ul class="top-expenses">
+    <!-- Top expenses -->
+    {% if top_expenses %}
+    <div class="card">
+      <div class="card-title">Maiores gastos</div>
       {% for exp in top_expenses %}
-      <li>
-        <span class="desc">{{ exp.desc }}</span>
-        <span class="category">{{ exp.category }}</span>
-        <span class="amount">R$ {{ exp.amount }}</span>
-      </li>
+      <div class="list-item">
+        <span class="rank">{{ loop.index }}</span>
+        <span class="text">{{ exp.desc }}<br><span class="sub">{{ exp.category }}</span></span>
+        <span class="badge-val badge-amber">R$ {{ exp.amount }}</span>
+      </div>
       {% endfor %}
-    </ul>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Categories -->
+  {% if top_categories %}
+  <div class="card">
+    <div class="card-title">Gastos por categoria</div>
+    {% for cat in top_categories %}
+    <div class="cat-row">
+      <div class="cat-header">
+        <span class="cat-name">{{ cat.name }}</span>
+        <span class="cat-val">R$ {{ cat.amount }}</span>
+      </div>
+      <div class="cat-bar"><div class="cat-bar-fill" style="width: {{ cat.pct }}%"></div></div>
+    </div>
+    {% endfor %}
   </div>
   {% endif %}
 
+  <!-- Month quick summary -->
+  {% if monthly_avg_day or top_day_spending %}
+  <div class="month-summary">
+    {% if monthly_avg_day %}
+    <div class="ms-item">
+      <div class="ms-val">R$ {{ monthly_avg_day }}</div>
+      <div class="ms-label">Media / dia</div>
+    </div>
+    {% endif %}
+    {% if top_day_spending %}
+    <div class="ms-item">
+      <div class="ms-val">R$ {{ top_day_spending.amount }}</div>
+      <div class="ms-label">Dia mais caro ({{ top_day_spending.date }})</div>
+    </div>
+    {% endif %}
+    {% if total_transactions %}
+    <div class="ms-item">
+      <div class="ms-val">{{ total_transactions }}</div>
+      <div class="ms-label">Transacoes</div>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Entertainment -->
   {% if entertainment %}
-  <div class="section">
-    <h2>🎬 Assistidos</h2>
-    <div class="entertainment-grid">
+  <div class="card">
+    <div class="card-title">Assistidos</div>
+    <div class="ent-grid">
       {% for item in entertainment %}
       <div class="ent-item">
         <div class="title">{{ item.title }}</div>
@@ -301,16 +492,18 @@
   </div>
   {% endif %}
 
+  <!-- Fun Fact -->
   {% if fun_fact %}
   <div class="fun-fact">
-    <div class="emoji">💡</div>
+    <div class="tag">Fun Fact</div>
     <div class="text">{{ fun_fact }}</div>
   </div>
   {% endif %}
 
   <div class="footer">
-    Gerado por Molt 🐍 · {{ generated_at }}
+    Gerado por <strong>Molt</strong> · {{ generated_at }}
   </div>
+
 </div>
 </body>
 </html>
