@@ -4,7 +4,7 @@
 0 9 * * *  PLUGGY_CONFIG_PATH=/data/nubank-config.json /app/run-job.sh nubank "python3 /app/scripts/pluggy-ingest.py"
 
 # ORA 03: cada 2h (localização + bateria) — silencioso
-0 */2 * * *  NOTIFY_ON_SUCCESS=false /app/run-job.sh ora03 "python3 /app/scripts/ora03-ingest.py"
+*/30 * * * *  NOTIFY_ON_SUCCESS=false /app/run-job.sh ora03 "python3 /app/scripts/ora03-ingest.py"
 
 # Jellyfin: 09:00 BRT = 12:00 UTC
 0 12 * * *  /app/run-job.sh jellyfin "python3 /app/scripts/jellyfin-ingest.py"
