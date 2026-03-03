@@ -1,0 +1,663 @@
+{
+  "panels": [
+    {
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "options": {
+        "content": "# \ud83d\udcca Personal Wrapped\nSeu m\u00eas em n\u00fameros: mobilidade, finan\u00e7as, entretenimento e lugares.",
+        "mode": "markdown"
+      },
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#36A2EB",
+            "mode": "fixed"
+          },
+          "unit": "km"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 2
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "km",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT COALESCE(MAX(odometer_km) - MIN(odometer_km), 0) as km FROM ora03_snapshots WHERE date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}' AND odometer_km > 0\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\ude97 Km Rodados",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#FF6384",
+            "mode": "fixed"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 2
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "locais",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT COUNT(DISTINCT CAST(ROUND(latitude, 3) AS VARCHAR) || ',' || CAST(ROUND(longitude, 3) AS VARCHAR)) as locais FROM ora03_snapshots WHERE latitude IS NOT NULL AND date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}'\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udccd Locais",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#FF9F40",
+            "mode": "fixed"
+          },
+          "unit": "currencyBRL"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 2
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "gastos",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT COALESCE(SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END), 0) as gastos FROM nubank_transactions WHERE date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}'\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udcb0 Gastos",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#4BC0C0",
+            "mode": "fixed"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 2
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "itens",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT COUNT(DISTINCT item_name) as itens FROM jellyfin_activity WHERE event_type = 'VideoPlaybackStopped' AND timestamp >= '${__from:date:YYYY-MM-DD}' AND timestamp <= '${__to:date:YYYY-MM-DD}'\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83c\udfac Assistidos",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#9966FF",
+            "mode": "fixed"
+          },
+          "max": 100,
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 2
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "pct",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT ROUND(AVG(battery_soc), 0) as avg_bat FROM ora03_snapshots WHERE date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}'\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udd0b Bateria M\u00e9dia",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#C9CBCF",
+            "mode": "fixed"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 2
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "[0]",
+              "text": "n",
+              "type": "number"
+            }
+          ],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "rows",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT COUNT(*) as n FROM ora03_snapshots WHERE date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}'\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udce1 Snapshots",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 14,
+        "x": 0,
+        "y": 6
+      },
+      "options": {
+        "basemap": {
+          "type": "default"
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "fixed": "#FF6384"
+                },
+                "opacity": 0.8,
+                "size": {
+                  "fixed": 8
+                }
+              }
+            },
+            "location": {
+              "latitude": "latitude",
+              "longitude": "longitude",
+              "mode": "coords"
+            },
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "view": {
+          "id": "coords",
+          "lat": -29,
+          "lon": -49.4,
+          "zoom": 12
+        }
+      },
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT latitude, longitude, address, timestamp, battery_soc as battery FROM ora03_snapshots WHERE latitude IS NOT NULL AND date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}' ORDER BY timestamp DESC\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\uddfa\ufe0f Mapa de Locais",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 10,
+        "x": 14,
+        "y": 6
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT address as local, visits as visitas, first_visit as primeira_visita, last_visit as ultima_visita FROM wrapped_locations WHERE first_visit >= '${__from:date:YYYY-MM-DD}' ORDER BY visits DESC LIMIT 10\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udccd Top Locais",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 18
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT category as categoria, ROUND(SUM(amount), 2) as total FROM nubank_transactions WHERE amount > 0 AND date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}' GROUP BY category ORDER BY total DESC LIMIT 8\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udcb0 Top Categorias",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "gastos"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FF9F40",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 18
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT date as dia, ROUND(SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END), 2) as gastos FROM nubank_transactions WHERE date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}' GROUP BY date ORDER BY date\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udcc8 Gastos por Dia",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 18
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT description as descricao, ROUND(amount, 2) as valor, date as data, category as categoria FROM nubank_transactions WHERE amount > 0 AND date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}' ORDER BY amount DESC LIMIT 10\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udd25 Maiores Gastos",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 26
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT item_name as titulo, user_name as usuario, device as dispositivo, timestamp as quando FROM jellyfin_activity WHERE event_type = 'VideoPlaybackStopped' AND timestamp >= '${__from:date:YYYY-MM-DD}' AND timestamp <= '${__to:date:YYYY-MM-DD}' ORDER BY timestamp DESC\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83c\udfac Conte\u00fado Assistido",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 26
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT item_genres as genero, COUNT(*) as total FROM jellyfin_activity WHERE event_type = 'VideoPlaybackStopped' AND item_genres IS NOT NULL AND timestamp >= '${__from:date:YYYY-MM-DD}' AND timestamp <= '${__to:date:YYYY-MM-DD}' GROUP BY item_genres ORDER BY total DESC LIMIT 8\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83c\udfad G\u00eaneros Assistidos",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "cfer8evtoz4zkc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#9966FF",
+            "mode": "fixed"
+          },
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 26
+      },
+      "options": {},
+      "targets": [
+        {
+          "columns": [],
+          "format": "table",
+          "refId": "A",
+          "root_selector": "",
+          "source": "url",
+          "type": "json",
+          "url": "http://duckdb-api:8089/query",
+          "url_options": {
+            "body": "{\"query\": \"SELECT timestamp, battery_soc as bateria FROM ora03_snapshots WHERE date >= '${__from:date:YYYY-MM-DD}' AND date <= '${__to:date:YYYY-MM-DD}' ORDER BY timestamp\"}",
+            "body_content_type": "application/json",
+            "body_type": "raw",
+            "method": "POST"
+          }
+        }
+      ],
+      "title": "\ud83d\udd0b Bateria ao Longo do Tempo",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [
+    "wrapped",
+    "personal",
+    "datalake"
+  ],
+  "time": {
+    "from": "now/M",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "\ud83d\udcca Personal Wrapped",
+  "uid": "personal-wrapped"
+}

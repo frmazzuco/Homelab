@@ -10,6 +10,7 @@ import http.client
 import os
 import sys
 from datetime import datetime
+import urllib.request
 from pathlib import Path
 
 # Usar DuckDB CLI via subprocess se lib não disponível
@@ -116,6 +117,19 @@ def parse_bool_sensor(items, code, true_val="1"):
     return None
 
 
+
+def reverse_geocode(lat, lon):
+    """Reverse geocode lat/lon to address via Nominatim."""
+    if lat is None or lon is None:
+        return None
+    try:
+        url = f"https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=json&zoom=16&addressdetails=1"
+        req = urllib.request.Request(url, headers={"User-Agent": "homelab-datalake/1.0"})
+        resp = urllib.request.urlopen(req, timeout=5)
+        data = json.loads(resp.read())
+        return data.get("display_name", "")[:200]
+    except Exception:
+        return None
 def ingest_snapshot(data):
     """Insere snapshot no DuckDB."""
     items = data.get("items", [])
@@ -131,10 +145,10 @@ def ingest_snapshot(data):
     is_charging = parse_bool_sensor(items, "2013023", "5")
     is_ac_on = parse_bool_sensor(items, "2078020", "1")
     
-    # Localização - não disponível neste endpoint
-    latitude = None
-    longitude = None
-    address = None
+    # Localização - vem no top-level do response
+    latitude = data.get("latitude")
+    longitude = data.get("longitude")
+    address = reverse_geocode(latitude, longitude)
     
     if USE_CLI:
         # Usar DuckDB CLI via subprocess
