@@ -228,3 +228,13 @@ services:
     volumes:
       - "${ARR_CLOUDBEAVER_WORKSPACE}:/opt/cloudbeaver/workspace"
       - "${ARR_CONFIG_ROOT}:/opt/sqlite"
+
+  kavita:
+    image: jvmilazz0/kavita:latest
+    container_name: kavita
+    restart: unless-stopped
+    ports:
+      - "8095:5000"
+    volumes:
+      - "${ARR_BOOKS_ROOT}:/books"
+      - "${ARR_CONFIG_ROOT}/kavita:/kavita/config"
