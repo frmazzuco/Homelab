@@ -234,7 +234,7 @@ services:
     container_name: kavita
     restart: unless-stopped
     ports:
-      - "8095:5000"
+      - "5000:5000"
     volumes:
       - "${ARR_BOOKS_ROOT}:/books"
       - "${ARR_CONFIG_ROOT}/kavita:/kavita/config"
