@@ -229,12 +229,18 @@ services:
       - "${ARR_CLOUDBEAVER_WORKSPACE}:/opt/cloudbeaver/workspace"
       - "${ARR_CONFIG_ROOT}:/opt/sqlite"
 
-  kavita:
-    image: jvmilazz0/kavita:latest
-    container_name: kavita
+
+  calibre-web:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
     restart: unless-stopped
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=America/Sao_Paulo
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
     ports:
-      - "5000:5000"
+      - "8083:8083"
     volumes:
-      - "/Users/franciscomazzucofilho/Media:/media"
-      - "${ARR_CONFIG_ROOT}/kavita:/kavita/config"
+      - "${ARR_CONFIG_ROOT}/calibre-web:/config"
+      - "/Users/franciscomazzucofilho/Media/Books:/books"
