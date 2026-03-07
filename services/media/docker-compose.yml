@@ -236,5 +236,5 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - "${ARR_BOOKS_ROOT}:/books"
+      - "/Users/franciscomazzucofilho/Media:/media"
       - "${ARR_CONFIG_ROOT}/kavita:/kavita/config"
