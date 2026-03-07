@@ -1,16 +1,21 @@
 # Datalake ingest schedules (times in UTC, BRT = UTC-3)
+# NOTA: ora03 roda em */30 (bate em :00 e :30).
+# Todos os outros jobs estão em :02 para evitar lock conflict no DuckDB.
 
-# Nubank: 06:00 BRT = 09:00 UTC
-0 9 * * *  PLUGGY_CONFIG_PATH=/data/nubank-config.json /app/run-job.sh nubank "python3 /app/scripts/pluggy-ingest.py"
+# Nubank: 06:02 BRT = 09:02 UTC
+2 9 * * *  PLUGGY_CONFIG_PATH=/data/nubank-config.json /app/run-job.sh nubank "python3 /app/scripts/pluggy-ingest.py"
 
-# ORA 03: cada 2h (localização + bateria) — silencioso
+# ORA 03: a cada 30 min — silencioso
 */30 * * * *  NOTIFY_ON_SUCCESS=false /app/run-job.sh ora03 "python3 /app/scripts/ora03-ingest.py"
 
-# Jellyfin: 09:00 BRT = 12:00 UTC
-0 12 * * *  /app/run-job.sh jellyfin "python3 /app/scripts/jellyfin-ingest.py"
+# Jellyfin: 09:02 BRT = 12:02 UTC
+2 12 * * *  /app/run-job.sh jellyfin "python3 /app/scripts/jellyfin-ingest.py"
 
-# Smart Morning Briefing: 07:00 BRT = 10:00 UTC
-0 10 * * *  /app/run-job.sh briefing "python3 /app/scripts/smart-morning-briefing.py"
+# Smart Morning Briefing: 07:02 BRT = 10:02 UTC
+2 10 * * *  /app/run-job.sh briefing "python3 /app/scripts/smart-morning-briefing.py"
 
-# Personal Wrapped: dia 1, 08:00 BRT = 11:00 UTC (gera mês anterior)
-0 11 1 * *  /app/run-job.sh wrapped "python3 /app/scripts/generate-wrapped.py"
+# Personal Wrapped: dia 1, 08:02 BRT = 11:02 UTC (gera mês anterior)
+2 11 1 * *  /app/run-job.sh wrapped "python3 /app/scripts/generate-wrapped.py"
+
+# ORA 03 localização: a cada minuto via HA API — silencioso
+* * * * *  NOTIFY_ON_SUCCESS=false /app/run-job.sh ora03-location "python3 /app/scripts/ha-location-ingest.py"
