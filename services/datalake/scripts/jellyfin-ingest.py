@@ -8,7 +8,7 @@ import urllib.request
 from datetime import datetime
 
 JELLYFIN_URL = os.environ.get("JELLYFIN_URL", "http://localhost:8096")
-JELLYFIN_API_KEY = os.environ.get("JELLYFIN_API_KEY", "68f96e724cadff95d4154bbad494537cc1911de0c3556af7")
+JELLYFIN_API_KEY = os.environ.get("JELLYFIN_API_KEY", "1ccf620dddba80946a086e11028beea66a6eec0753cc83e14693751c8957ed59")
 DUCKDB_PATH = os.environ.get("DUCKDB_PATH", os.path.expanduser("~/datalake/datalake.duckdb"))
 
 def jf_get(path, params=None):
