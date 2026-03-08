@@ -304,7 +304,18 @@ def main():
     print(f"  Jellyfin: {JELLYFIN_URL}")
     print(f"  DuckDB: {DUCKDB_PATH}")
 
-    conn = duckdb.connect(DUCKDB_PATH)
+    # Retry logic: DuckDB só permite 1 writer — espera até 3 tentativas
+    import time as _time
+    conn = None
+    for _attempt in range(1, 4):
+        try:
+            conn = duckdb.connect(DUCKDB_PATH)
+            break
+        except Exception as _e:
+            if _attempt == 3:
+                raise
+            print(f"  [WARN] DuckDB lock conflict (tentativa {_attempt}/3): {_e}")
+            _time.sleep(30)
     create_tables(conn)
 
     movies = ingest_items(conn, "Movie", "Movie")
